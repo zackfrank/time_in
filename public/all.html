@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dance Studio Template</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content='width=device-width, initial-scale=1, width=device-width'>
+  <meta name="description" content="Responsive template for dance studio">
+  <meta name="keywords" content="dance, yoga, dancing, sports, website, template, parallax">
+
+  <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+
+  
+
+  
+  <link rel="stylesheet" href="styles.min.css">
+  
+
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+</head>
+<body class="idance">
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="loader">Loading...</div>
+</div>
+
+<nav class="navbar navbar-expand-md navbar-top">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand" href="#" data-scroll-goto="0">IDance</a>
+
+    <!-- Navbar toggler. Shown for mobile devices (https://getbootstrap.com/docs/4.0/components/navbar/#toggler) -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#idanceNav"
+      aria-controls="idanceNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      >
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <!-- Navbar -->
+   <div class="collapse navbar-collapse" id="idanceNav">
+     <i class="fa fa-times close-navbar-mobile" aria-hidden="true" data-toggle="collapse" data-target="#idanceNav"></i>
+     <ul class="navbar-nav ml-auto">
+       <li><a href="#" data-scroll-nav="0" class="nav-link active">Home</a></li>
+       <li><a href="#" data-scroll-nav="1" class="nav-link">Classes</a></li>
+       <li><a href="#" data-scroll-nav="2" class="nav-link">Schedule</a></li>
+       <li><a href="#" data-scroll-nav="3" class="nav-link">Prices</a></li>
+       <li><a href="#" data-scroll-nav="4" class="nav-link">Events</a></li>
+       <li><a href="#" data-scroll-nav="5" class="nav-link">Contacts</a></li>
+       <li><a href="#" data-scroll-nav="6" class="nav-link">Address</a></li>
+     </ul>
+   </div>
+ </div>
+</nav>
+
+<section data-scroll-index="0" class="home bg-darken">
+  <div class="jumbotron">
+    <h1 data-aos="zoom-in-up" data-aos-delay="100">Dance Studio in NYC</h1>
+    <a href="#" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200">Join Us</a>
+    <p data-aos="zoom-in-up" data-aos-delay="300">Dance like there’s nobody watching!</p>
+  </div>
+</section>
+
+
+<section data-scroll-index="1" class="classes content-block">
+  <div class="container">
+    <h2 data-aos="zoom-in-up">Dance Styles</h2>
+
+    <div class="row no-gutters dance-styles">
+      <div class="col-md-8 row no-gutters">
+
+        <!-- Break Dance -->
+        <div class="col-md-6">
+          <div class="dance-style"
+               data-toggle="modal"
+               data-target="#classDetails"
+               data-title="Break Dance"
+               data-img="img/dc-break.jpg"
+            >
+            <img src="img/dc-break.jpg" alt="Break Dance">
+            <div class="dance-style-overlay">Break Dance</div>
+          </div>
+        </div>
+
+        <!-- Stretching -->
+        <div class="col-md-6">
+          <div class="dance-style"
+               data-toggle="modal"
+               data-target="#classDetails"
+               data-title="Stretching"
+               data-img="img/dc-stretching.jpg"
+            >
+            <img src="img/dc-stretching.jpg" alt="Stretching">
+            <div class="dance-style-overlay">Stretching</div>
+          </div>
+        </div>
+
+        <!-- Yoga -->
+        <div class="col-md-6">
+          <div class="dance-style"
+               data-toggle="modal"
+               data-target="#classDetails"
+               data-title="Yoga"
+               data-img="img/dc-yoga.jpg"
+            >
+            <img src="img/dc-yoga.jpg" alt="Yoga">
+            <div class="dance-style-overlay">Yoga</div>
+          </div>
+        </div>
+
+        <!-- Contemporary Dance -->
+        <div class="col-md-6">
+          <div class="dance-style"
+               data-toggle="modal"
+               data-target="#classDetails"
+               data-title="Contemporary Dance"
+               data-img="img/dc-contemporary.jpg"
+            >
+            <img src="img/dc-contemporary.jpg" alt="Contemporary Dance">
+            <div class="dance-style-overlay">Contemporary Dance</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 row no-gutters">
+
+        <!-- Street Dance -->
+        <div class="col-md-12 col-md-6">
+          <div class="dance-style dance-style-long"
+               data-toggle="modal"
+               data-target="#classDetails"
+               data-title="Street Dance"
+               data-img="img/dc-street.jpg"
+            >
+            <img src="img/dc-street.jpg" alt="Street Dance">
+            <div class="dance-style-overlay">Street Dance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quotes bg-darken">
+  <div class="container quotes-container">
+    <div id="quotes" class="carousel slide carousel-fade" data-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Quote 1 -->
+        <div class="carousel-item active">
+          <div class="quote">
+            <p>
+              <i class="fa fa-quote-left" aria-hidden="true"></i>
+              We dance for laughter, we dance for tears, we dance for madness, we dance for fears, we dance for hopes,
+              we dance for screams, we are the dancers, we create the dreams.
+              <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </p>
+            <span>Albert Einstein</span>
+          </div>
+        </div>
+
+        <!-- Quote 2 -->
+        <div class="carousel-item">
+          <div class="quote">
+            <p>
+              <i class="fa fa-quote-left" aria-hidden="true"></i>
+              You’ve gotta dance like there’s nobody watching, Love like you’ll never be hurt, Sing like there’s nobody
+              listening, And live like it’s heaven on earth.
+              <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </p>
+            <span>William W. Purkey</span>
+          </div>
+        </div>
+
+        <!-- Quote 3 -->
+        <div class="carousel-item">
+          <div class="quote">
+            <p>
+              <i class="fa fa-quote-left" aria-hidden="true"></i>
+              When you dance, your purpose is not to get to a certain place on the floor. It’s to enjoy each step along
+              the way
+              <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </p>
+            <span>Wayne Dyer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-scroll-index="2" class="schedule content-block">
+  <div class="container">
+    <h2 data-aos="zoom-in-up">Schedule</h2>
+
+    <div class="timetable">
+
+      <!-- Schedule Top Navigation -->
+      <nav class="nav nav-tabs">
+        <a class="nav-link active">Mon</a>
+        <a class="nav-link">Tue</a>
+        <a class="nav-link">Wed</a>
+        <a class="nav-link">Thu</a>
+        <a class="nav-link">Fri</a>
+        <a class="nav-link">Sat</a>
+        <a class="nav-link">Sun</a>
+      </nav>
+
+      <div class="tab-content">
+        <div class="tab-pane show active">
+          <div class="row">
+
+            <!-- Schedule Item 1 -->
+            <div class="col-md-6">
+              <div class="timetable-item">
+                <div class="timetable-item-img">
+                  <img src="img/schedule-contemporary.jpg" alt="Contemporary Dance">
+                </div>
+                <div class="timetable-item-main">
+                  <div class="timetable-item-time">4:00pm - 5:00pm</div>
+                  <div class="timetable-item-name">Contemporary Dance</div>
+                  <a href="#" class="btn btn-primary btn-book">Book</a>
+                  <div class="timetable-item-like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <div class="timetable-item-like-count">11</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Item 2 -->
+            <div class="col-md-6">
+              <div class="timetable-item">
+                <div class="timetable-item-img">
+                  <img src="img/schedule-break.jpg" alt="Break Dance">
+                </div>
+                <div class="timetable-item-main">
+                  <div class="timetable-item-time">5:00pm - 6:00pm</div>
+                  <div class="timetable-item-name">Break Dance</div>
+                  <a href="#" class="btn btn-primary btn-book">Book</a>
+                  <div class="timetable-item-like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <div class="timetable-item-like-count">28</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Item 3 -->
+            <div class="col-md-6">
+              <div class="timetable-item">
+                <div class="timetable-item-img">
+                  <img src="img/schedule-street.jpg" alt="Street Dance">
+                </div>
+                <div class="timetable-item-main">
+                  <div class="timetable-item-time">5:00pm - 6:00pm</div>
+                  <div class="timetable-item-name">Street Dance</div>
+                  <a href="#" class="btn btn-primary btn-book">Book</a>
+                  <div class="timetable-item-like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <div class="timetable-item-like-count">28</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Item 4 -->
+            <div class="col-md-6">
+              <div class="timetable-item">
+                <div class="timetable-item-img">
+                  <img src="img/schedule-yoga.jpg" alt="Yoga">
+                </div>
+                <div class="timetable-item-main">
+                  <div class="timetable-item-time">7:00pm - 8:00pm</div>
+                  <div class="timetable-item-name">Yoga</div>
+                  <a href="#" class="btn btn-primary btn-book">Book</a>
+                  <div class="timetable-item-like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <div class="timetable-item-like-count">23</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Item 5 -->
+            <div class="col-md-6">
+              <div class="timetable-item">
+                <div class="timetable-item-img">
+                  <img src="img/schedule-stretching.jpg" alt="Stretching">
+                </div>
+                <div class="timetable-item-main">
+                  <div class="timetable-item-time">6:00pm - 7:00pm</div>
+                  <div class="timetable-item-name">Stretching</div>
+                  <a href="#" class="btn btn-primary btn-book">Book</a>
+                  <div class="timetable-item-like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <div class="timetable-item-like-count">14</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Item 6 -->
+            <div class="col-md-6">
+              <div class="timetable-item">
+                <div class="timetable-item-img">
+                  <img src="img/schedule-street.jpg" alt="Street Dance">
+                </div>
+                <div class="timetable-item-main">
+                  <div class="timetable-item-time">8:00pm - 9:00pm</div>
+                  <div class="timetable-item-name">Street Dance</div>
+                  <a href="#" class="btn btn-primary btn-book">Book</a>
+                  <div class="timetable-item-like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <div class="timetable-item-like-count">9</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials bg-darken">
+  <div class="container">
+    <div id="testimonials" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Review 1 -->
+        <div class="carousel-item active">
+          <div class="client-review">
+            <div class="client-img">
+              <img src="img/testimonials-face-01.jpg" alt="Ann Doe">
+            </div>
+            <div class="client-text">This is a fantastic and unique dance school! The classes are so energetic, I feel totally wiped out in a good way. You learn so much and everyone is really friendly!
+              <div class="name">Ann Doe</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="carousel-item">
+          <div class="client-review">
+            <div class="client-img">
+              <img src="img/testimonials-face-02.jpg" alt="Lucy Wilson">
+            </div>
+            <div class="client-text">IDance is the best dance school I've ever been to! I absolutely love the classes! Everyone is so welcoming and I've met so many new friends!
+              <div class="name">Lucy Wilson</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="carousel-item">
+          <div class="client-review">
+            <div class="client-img">
+              <img src="img/testimonials-face-03.jpg" alt="John Smith">
+            </div>
+            <div class="client-text">I'm really enjoying it! Thank you so much for bringing dance back into my life! That is fantastic! I love it!
+              <div class="name">John Smith</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <ol class="carousel-indicators">
+        <li data-target="#testimonials" data-slide-to="0" class="active"></li>
+        <li data-target="#testimonials" data-slide-to="1"></li>
+        <li data-target="#testimonials" data-slide-to="2"></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section data-scroll-index="3" class="prices content-block">
+  <div class="container">
+    <h2 data-aos="zoom-in-up">Pricing</h2>
+
+    <div class="row">
+
+      <!-- Price Option 1 -->
+      <div class="col-md-4">
+        <div class="price-option">
+          <h3 class="price-option-name">Flex</h3>
+          <div class="price-option-main">
+            <div class="price-value">
+              <span class="price-currency">$</span>20<span class="pricing-desc">/class</span>
+            </div>
+
+            <div class="price-option-features">
+              <p>Just Drop In</p>
+              <p>No Tickets Discounts</p>
+              <p>Free Trial Class</p>
+            </div>
+
+            <a href="#" class="btn btn-default btn-join">Join Us</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Option 2 -->
+      <div class="col-md-4">
+        <div class="price-option">
+          <h3 class="price-option-name highlighted">Community</h3>
+          <div class="price-option-main">
+            <div class="price-value">
+              <span class="price-currency">$</span>150<span class="pricing-desc">/mth</span>
+            </div>
+
+            <div class="price-option-features">
+              <p>8 Classes a Month</p>
+              <p>Events Tickets Discount - 50%</p>
+              <p>2 Free Trial Classes</p>
+            </div>
+
+            <a href="#" class="btn btn-primary btn-join">Join Us</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Option 3 -->
+      <div class="col-md-4">
+        <div class="price-option">
+          <h3 class="price-option-name">Premium</h3>
+          <div class="price-option-main">
+            <div class="price-value">
+              <span class="price-currency">$</span>300<span class="pricing-desc">/mth</span>
+            </div>
+
+            <div class="price-option-features">
+              <p>Unlimited Access to Classes</p>
+              <p>Free Tickets to Events</p>
+              <p>Free Trial Access for 10 days</p>
+            </div>
+
+            <a href="#" class="btn btn-default btn-join">Join Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-scroll-index="4" class="subscribe bg-darken">
+  <div class="container">
+    <div class="subscribe-block">
+      <h5>Keep me informed</h5>
+
+      <div class="input-group subscribe-input">
+        <input type="text" class="form-control" placeholder="Your email address" />
+        <a href="#" class="input-group-addon fa fa-envelope-o"></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-scroll-index="4" class="events content-block">
+  <div class="container">
+    <h2 data-aos="zoom-in-up">Our News and Events</h2>
+
+    <div class="row">
+
+      <!-- Event 1 -->
+      <div class="col-md-4">
+        <div class="event">
+          <div class="event-picture">
+            <img src="img/event-1.jpg" alt="Masterclass with Hannah Doe">
+          </div>
+          <div class="event-info">
+            <div class="event-date">Oct 15, 2017</div>
+            <h6>Masterclass with Hannah Doe</h6>
+            <div class="main-content">
+              <p>The masterclass is a unique opportunity to learn from the best expert in dance. For dancers at intermediate
+                level and above.</p>
+            </div>
+            <div class="row event-actions">
+              <div class="col-lg-6">
+                <a href="#"
+                   class="btn btn-light"
+                   data-toggle="modal"
+                   data-target="#eventDetails"
+                   data-title="Masterclass with Hannah Doe"
+                   data-img="img/event-1.jpg"
+                  >Learn More</a>
+              </div>
+              <div class="col-lg-6">
+                <a href="#" class="btn btn-default">Buy a Ticket</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 2 -->
+      <div class="col-md-4">
+        <div class="event">
+          <div class="event-picture">
+            <img src="img/event-2.jpg" alt="IDance Yoga Festival">
+          </div>
+          <div class="event-info">
+            <div class="event-date">Nov 20, 2017</div>
+            <h6>IDance Yoga Festival</h6>
+            <div class="main-content">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="row event-actions">
+              <div class="col-lg-6">
+                <a href="#"
+                   class="btn btn-light"
+                   data-toggle="modal"
+                   data-target="#eventDetails"
+                   data-title="IDance Yoga Festival"
+                   data-img="img/event-2.jpg"
+                  >Learn More</a>
+              </div>
+              <div class="col-lg-6">
+                <a href="#" class="btn btn-default">Book for Free</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 3 -->
+      <div class="col-md-4">
+        <div class="event">
+          <div class="event-picture">
+            <img src="img/event-3.jpg" alt="Virtual Reality Dancing">
+          </div>
+          <div class="event-info">
+            <div class="event-date">Dec 12, 2017</div>
+            <h6>Virtual Reality Dancing</h6>
+            <div class="main-content">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore!</p>
+            </div>
+            <div class="row event-actions">
+              <div class="col-md-12">
+                <a href="#"
+                   class="btn btn-light"
+                   data-toggle="modal"
+                   data-target="#eventDetails"
+                   data-title="Virtual Reality Dancing"
+                   data-img="img/event-3.jpg"
+                  >Learn More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="News and events navigation">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link page-link-prev" href="#" aria-label="Previous">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link active" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<section data-scroll-index="5" class="social bg-darken">
+  <div class="container">
+    <div class="row social-icons">
+
+      <!-- Facebook -->
+      <a href="#" class="social-link col-md-3 col-6">
+        <i class="fa fa-facebook" aria-hidden="true"></i>
+        <span class="social-name">facebook</span>
+      </a>
+
+      <!-- Twitter -->
+      <a href="#" class="social-link col-md-3 col-6">
+        <i class="fa fa-twitter" aria-hidden="true"></i>
+        <span class="social-name">twitter</span>
+      </a>
+
+      <!-- Youtube -->
+      <a href="#" class="social-link col-md-3 col-6">
+        <i class="fa fa-youtube" aria-hidden="true"></i>
+        <span class="social-name">youtube</span>
+      </a>
+
+      <!-- Instagram -->
+      <a href="#" class="social-link col-md-3 col-6">
+        <i class="fa fa-instagram" aria-hidden="true"></i>
+        <span class="social-name">instagram</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section data-scroll-index="5" class="contacts content-block">
+  <div class="container">
+    <h2 data-aos="zoom-in-up">Get in Touch</h2>
+
+    <div class="row contacts-row">
+      <div class="col-md-9">
+
+        <!-- Contact Form -->
+        <form class="contact-form">
+          <div class="row">
+
+            <!-- Name Input -->
+            <div class="col-md-6 form-group">
+              <input type="text" placeholder="Name" class="form-control" />
+            </div>
+
+            <!-- Email Input -->
+            <div class="col-md-6 form-group">
+              <input type="email" placeholder="Email" class="form-control" />
+            </div>
+          </div>
+
+          <!-- Subject Input -->
+          <div class="form-group">
+            <input type="text" name="subject" placeholder="Subject" class="form-control" />
+          </div>
+
+          <!-- Message Input -->
+          <div class="form-group">
+            <textarea placeholder="Message" rows="7" class="form-control contact-message"></textarea>
+          </div>
+
+          <!-- Send Message Button -->
+          <button type="submit" class="btn btn-default btn-contact">Send Message</button>
+        </form>
+      </div>
+      <div class="col-md-3">
+
+        <!-- Phone Numbers -->
+        <div class="contact-item contact-item-phone" data-aos="fade-up" data-aos-delay="300">
+          <h6>Phone Numbers</h6>
+          <p>1-234-567-890</p>
+          <p>1-987-654-321</p>
+        </div>
+
+        <!-- Email Address -->
+        <div class="contact-item contact-item-mail" data-aos="fade-up" data-aos-delay="400">
+          <h6>Email Address</h6>
+          <p>contact@idance.com</p>
+        </div>
+
+        <!-- Business Hours -->
+        <div class="contact-item contact-item-hours" data-aos="fade-up" data-aos-delay="500">
+          <h6>Business Hours</h6>
+          <p>Mon-Fri : 9am - 9pm</p>
+          <p>Sat : 9am - 2pm</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-scroll-index="6" class="address">
+  <!-- Google Maps container -->
+  <div class="map" id="map"></div>
+
+  <!-- Address details block -->
+  <div class="location">
+    <div class="container" data-aos="zoom-in-up" data-aos-delay="300">
+      <div class="address-info">
+        <h6>Address</h6>
+        <p>2121 Broadway, New York, NY 10023
+          <a class="directions"
+             aria-hidden="true"
+             href="https://www.google.com/maps/dir//40.7806428,-73.9819233/@40.780643,-73.981923,16z?hl=en-US"
+             target="_blank"
+             data-toggle="tooltip"
+             data-placement="top"
+             title="Get directions"
+            ></a>
+        </p>
+      </div>
+      <div class="address-description">
+        We are right next to the TD Bank and NYC Designer Market, across from Yoga Den and Caffe Nero
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-copy">
+      Copyright - iDance Ltd.
+    </div>
+    <div class="footer-info">
+      Made with <span class="love">❤</span> ️by <a target="_blank" href="https://wrapbootstrap.com/user/themelabs">ThemeLabs</a>
+    </div>
+  </div>
+</footer>
+
+<!-- "Live Chat" icon in the bottom right-hand corner -->
+<div class="chat">
+  <a href="#"
+     class="chat-link"
+     data-toggle="tooltip"
+     data-html="true"
+     data-placement="left"
+     title="Live Chat.<br> Ask us anything!"
+    ></a>
+</div>
+
+
+<!-- Modals -->
+<div id="classDetails" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog classes-details" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Class Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et doloremagna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+          fugiat nullapariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+          anim id estlaborum.</p>
+
+        <div class="row">
+          <div class="col-sm-5 order-sm-2">
+            <img class="modal-img" src="img/dc-break.jpg" alt="Class Details">
+          </div>
+          <div class="col-sm-7 order-sm-1">
+            <h6>What to Wear</h6>
+            <p>Please wear whatever you feel comfortable in. Make sure you can move freely.</p>
+            <h6>When and Where</h6>
+            <ul class="timetable">
+              <li>Monday: 6:00pm - 7:00pm (Studio 2 - <a href="#" data-dismiss="modal" data-scroll-nav="6">address details</a>)</li>
+              <li>Wednesday: 7:00pm - 8:00pm (Studio 3 - <a href="#" data-dismiss="modal" data-scroll-nav="6">address details</a>)</li>
+              <li>Friday: 6:00pm - 7:00pm (Studio 2 - <a href="#" data-dismiss="modal" data-scroll-nav="6">address details</a>)</li>
+            </ul>
+            <p class="important-text">All ages welcome!</p>
+            <p class="contact-us-text"><a href="#" data-dismiss="modal" data-scroll-nav="5">Contact Us</a> to find out more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="eventDetails" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog event-details" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Event Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et doloremagna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+          fugiat nullapariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+          anim id estlaborum.</p>
+
+        <div class="row">
+          <div class="col-sm-5 order-sm-2">
+            <img class="modal-img" src="img/event-2.jpg" alt="Event Details">
+          </div>
+          <div class="col-sm-7 order-sm-1">
+            <h6>What to Wear</h6>
+            <p>Please wear whatever you feel comfortable in. Make sure you can move freely.</p>
+            <h6>When and Where</h6>
+            <ul class="timetable">
+              <li>Monday: 6:00pm - 7:00pm (Studio 2 - <a href="#" data-dismiss="modal" data-scroll-nav="6">address details</a>)</li>
+            </ul>
+            <p class="important-text">All ages welcome!</p>
+            <p><a href="#" data-dismiss="modal" data-scroll-nav="5">Contact Us</a> to find out more</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- change "key=AI..." to your own google map api key: https://developers.google.com/maps/documentation/javascript/get-api-key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9YZl2GWCb7LuN5mZqSziiI6heche8lMU"></script>
+
+
+
+
+<script src="scripts.min.js"></script>
+
+
+</body>
+</html>

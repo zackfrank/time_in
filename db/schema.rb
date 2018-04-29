@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180409204904) do
+ActiveRecord::Schema.define(version: 20180412015121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,12 +22,20 @@ ActiveRecord::Schema.define(version: 20180409204904) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "bookings", force: :cascade do |t|
+  create_table "attendance_records", force: :cascade do |t|
     t.date "date"
+    t.string "time"
+    t.integer "capacity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "bookings", force: :cascade do |t|
     t.string "status"
     t.integer "student_id"
     t.integer "user_id"
-    t.integer "time_slot_id"
+    t.integer "attendance_record_id"
+    t.boolean "admin_booking"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -37,17 +45,8 @@ ActiveRecord::Schema.define(version: 20180409204904) do
     t.string "last_name"
     t.boolean "high_school"
     t.integer "account_id"
-    t.boolean "active?"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.date "birthday"
-  end
-
-  create_table "time_slots", force: :cascade do |t|
-    t.string "day"
-    t.string "time"
-    t.integer "capacity"
-    t.boolean "high_school_only"
+    t.boolean "active?"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

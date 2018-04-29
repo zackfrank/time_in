@@ -1,11 +1,11 @@
 class CreateBookings < ActiveRecord::Migration[5.1]
   def change
     create_table :bookings do |t|
-      t.date :date
       t.string :status
       t.integer :student_id
       t.integer :user_id
-      t.integer :time_slot_id
+      t.integer :attendance_record_id
+      t.boolean :admin_booking
 
       t.timestamps
     end

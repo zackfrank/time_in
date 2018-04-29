@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content='width=device-width, initial-scale=1, width=device-width'>
+  <meta name="description" content="Scheduling app for Mathnasium of Oak Park/River Forest">
+  <meta name="keywords" content="schedule, book, booking, scheduling, math, learning, center, tutor, tutoring">
+
+  <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.min.css">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+  <title>Capstone</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.js"></script>
+  <script src="index.js" defer></script>
+</head>
+
+<body class="idance">
+  <div id="vue-app">
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loader">Loading...</div>
+    </div>
+
+    <nav class="navbar navbar-expand-md navbar-top navbar-light">
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#" data-scroll-goto="0">Math Booking</a>
+
+        <!-- Navbar toggler. Shown for mobile devices (https://getbootstrap.com/docs/4.0/components/navbar/#toggler) -->
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#idanceNav"
+        aria-controls="idanceNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+      <!-- Navbar -->
+        <div class="collapse navbar-collapse" id="idanceNav">
+          <i class="fa fa-times close-navbar-mobile" aria-hidden="true" data-toggle="collapse" data-target="#idanceNav"></i>
+          <ul class="navbar-nav ml-auto">
+            <li><a href="/#/" class="nav-link" v-on:click="setPage('home')" v-bind:class="{ active: (page === 'home') }">Home</a></li>
+            <li><a href="/#/profile" class="nav-link" v-on:click="setPage('profile')" v-bind:class="{ active: (page === 'profile') }">Profile</a></li>
+            <li><a href="/#/book" class="nav-link" v-on:click="setPage('book')" v-bind:class="{ active: (page === 'book') }">Book</a></li>
+            <li><a href="/#/schedule" class="nav-link" v-on:click="setPage('schedule')" v-bind:class="{ active: (page === 'schedule') }">My Schedule</a></li>
+            <li><a href="/#/auth" class="nav-link" v-on:click="setPage('auth')" v-bind:class="{ active: (page === 'auth') }">Signup/Login</a></li>
+            <li><a href="/#/logout" class="nav-link">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+    <section class="home bg-darken">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Book Your Sessions</h1>
+        <a href="#" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200">Start Booking!</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">Book your next session today!</p>
+      </div>
+    </section>
+
+    <router-view></router-view>
+
+  </div>
+
+<!-- change "key=AI..." to your own google map api key: https://developers.google.com/maps/documentation/javascript/get-api-key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9YZl2GWCb7LuN5mZqSziiI6heche8lMU"></script>
+<script src="scripts.min.js"></script>
+
+</body>
+</html>
+
+<template id="home-page">
+  <div class="vue-component">
+    <section data-scroll-index="1" class="classes content-block">
+      <div class="container">
+        <h2 data-aos="zoom-in-up">Math Booking: Book Sessions With Ease!</h2>
+
+        <div class="row no-gutters dance-styles">
+          <div class="col-md-8 row no-gutters">
+
+            <!-- Book -->
+            <div class="col-md-6">
+              <div class="dance-style">
+                <a href="/#/book">
+                  <!-- <img src="img/schedule.jpg" alt="Schdedule"> -->
+                  <img src="img/black.png" alt="black block image for schedule">
+                  <div class="dance-style-overlay">Schedule sessions with ease</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Profile -->
+            <div class="col-md-6">
+              <div class="dance-style">
+                <a href="/#/profile">
+                  <!-- <img src="img/profile.jpg" alt="Profile"> -->
+                  <img src="img/red.png" alt="Red block image for profile">
+
+                  <div class="dance-style-overlay">Manage your preferences and settings</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Schedule -->
+            <div class="col-md-6">
+              <div class="dance-style">
+                <a href="/#/schedule">
+                  <!-- <img src="img/events.jpg" alt="Events"> -->
+                  <img src="img/red.png" alt="red block image for schedule">
+                  <div class="dance-style-overlay">View/manage past and upcoming sessions</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Mathnasium -->
+            <div class="col-md-6">
+              <div class="dance-style">
+                <a href="http://www.mathnasium.com/oakparkriverforest" target="_blank">
+                  <!-- <img src="img/a-plus-outside.jpg" alt="Mathnasium OPRF"> -->
+                  <img src="img/gray.png" alt="Mathnasium OPRF">
+                  <div class="dance-style-overlay">Visit Mathnasium OPRF for more info</div>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-4 row no-gutters">
+            <!-- Create Account -->
+            <div class="col-md-12 col-md-6">
+              <div class="dance-style dance-style-long">
+                <a href="/#/auth">
+                  <!-- <img src="img/teaching.jpg" alt="Create"> -->
+                  <img src="img/black.png" alt="Black block for create account">
+                  <div class="dance-style-overlay">Create your account and start booking!</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<template id="profile">
+  <div class="vue-component">
+    <section data-scroll-index="3" class="schedule content-block">
+      <div class="container">
+        <h2 data-aos="zoom-in-up">User Profile</h2>
+        <div class="timetable">
+
+          <!-- Schedule Top Navigation -->
+          <nav class="nav nav-tabs" style="margin-bottom: 25px">
+            <a class="nav-link" v-bind:class="{active: tab === 'user'}" v-on:click="setTab('user')">Your Info</a>
+            <a class="nav-link" v-bind:class="{active: tab === 'students'}" v-on:click="setTab('students')">Students</a>
+            <a class="nav-link" v-bind:class="{active: tab === 'account'}" v-on:click="setTab('account')">Account</a>
+          </nav>
+
+          <div class="tab-content">
+            <div class="tab-pane show active">
+              
+              <!-- USER PROFILE -->
+              <div class="row" v-if="tab === 'user'"> 
+                
+                <!-- First Name -->
+                <div class="col-md-6">
+                  <div class="timetable-item">
+                    <div class="timetable-item-main">
+                      <div class="timetable-item-time">First Name:</div>
+                      <div class="timetable-item-name">{{user.first_name}}</div>
+                      <div class="row event-actions">
+                        <div class="col-md-12">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#editFirstName"
+                             data-title="Edit First Name"
+                            >Change</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Last Name -->
+                <div class="col-md-6">
+                  <div class="timetable-item">
+                    <div class="timetable-item-main">
+                      <div class="timetable-item-time">Last Name:</div>
+                      <div class="timetable-item-name">{{user.last_name}}</div>
+                      <div class="row event-actions">
+                        <div class="col-md-12">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#editFirstName"
+                             data-title="Edit First Name"
+                            >Change</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                  <div class="timetable-item">
+                    <div class="timetable-item-main">
+                      <img src="/img/contact-email.png" height="25%" style="position: absolute;top: 0px;right: 0px;" alt="">
+                      <div class="timetable-item-time">Email:</div>
+                      <div class="timetable-item-name">{{user.email}}</div>
+                      <div class="row event-actions">
+                        <div class="col-md-12">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#editFirstName"
+                             data-title="Edit First Name"
+                            >Change</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="col-md-6">
+                  <div class="timetable-item">
+                    <div class="timetable-item-main">
+                      <img src="/img/contact-phone.png" height="30%" style="position: absolute;top: 0px;right: 0px;" alt="">
+                      <div class="timetable-item-time">Phone Number:</div>
+                      <div class="timetable-item-name">{{user.phone_number}}</div>
+                      <div class="row event-actions">
+                        <div class="col-md-12">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#editFirstName"
+                             data-title="Edit First Name"
+                            >Change</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Relationship -->
+                <div class="col-md-6">
+                  <div class="timetable-item">
+                    <div class="timetable-item-main">
+                      <div class="timetable-item-time">Relationship to Student(s):</div>
+                      <div class="timetable-item-name">{{user.relationship}}</div>
+                      <div class="row event-actions">
+                        <div class="col-md-12">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#editFirstName"
+                             data-title="Edit First Name"
+                            >Change</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Active -->
+                <div class="col-md-6">
+                  <div class="timetable-item">
+                    <div class="timetable-item-main">
+                      <div class="timetable-item-time">Active:</div>
+                      <div class="timetable-item-name" style="text-transform: uppercase;">{{user.active}}</div>
+                      <div class="row event-actions">
+                        <div class="col-md-12">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#editFirstName"
+                             data-title="Edit First Name"
+                            >
+                            <span v-if="user.active">Deactivate</span>
+                            <span v-if="!user.active">Activate User</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Password -->
+                <div class="contact-item col-md-6" style="margin: auto; margin-top: 25px">
+                  <button class="btn btn-default btn-join">Change Password</button>
+                </div>
+
+              </div>
+
+              <!-- STUDENT PROFILES -->
+              <div class="row" v-if="tab === 'students'"> 
+
+                <div class="col-md-4" v-for="student in students">
+                  <div class="event">
+                    <div class="event-picture">
+                      <img src="img/larry-float.jpg" alt="Larry the A plus floating">
+                    </div>
+                    <div class="event-info">
+                      <div class="event-date">Student</div>
+                      <h6>{{student.first_name}} {{student.last_name}}</h6>
+                      <div class="main-content">
+                        <p>Birthday: {{student.birthday}}</p>
+                        <p v-if="student.high_school">High School Program</p>
+                      </div>
+                      <div class="row event-actions">
+                        <div class="col-lg-6">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#eventDetails"
+                             data-title="IDance Yoga Festival"
+                             data-img="img/event-2.jpg"
+                            >Deactivate</a>
+                        </div>
+                        <div class="col-lg-6">
+                          <a href="#" class="btn btn-default">Edit Details</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- ACCOUNT PROFILE --> 
+              <h2 data-aos="zoom-in-up" v-if="tab === 'account'">The {{account.name}} Account</h2>
+
+              <div class="row" v-if="tab === 'account'"> 
+                <div style="margin: auto; width: 40%" v-for="person in account.users" v-if="person.first_name !== user.first_name">
+                  <div class="event">
+                    <div class="event-picture">
+                      <img src="img/larry-float.jpg" alt="Larry the A plus floating">
+                    </div>
+                    <div class="event-info">
+                      <div class="event-date">{{person.relationship}}</div>
+                      <h6>{{person.first_name}} {{person.last_name}}</h6>
+                      <div class="main-content">
+                        <p>Email: {{person.email}}</p>
+                        <p> <span v-if="person.active">Active</span><span v-if="!person.active">Inactive</span></p>
+                      </div>
+                      <div class="row event-actions">
+                        <div class="col-lg-6">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#eventDetails"
+                             data-title="IDance Yoga Festival"
+                             data-img="img/event-2.jpg"
+                            >Deactivate</a>
+                        </div>
+                        <div class="col-lg-6">
+                          <a href="#" class="btn btn-default">Edit Details</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            <!-- COMPLETE END OF PROFILE CONTENT -->
+            </div>
+          </div>
+        </div>
+                
+      </div>
+
+
+    </section>
+  </div>
+</template>
+
+<template id="booking">
+  <div class="vue-component container">
+
+    <section data-scroll-index="1" class="schedule content-block">
+      <h2 data-aos="zoom-in-up">Booking</h2>
+      
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="">Previous</a></li>
+          <li class="page-item"><a class="page-link">Date</a></li>
+          <li class="page-item"><a class="page-link" href="">Next</a></li>
+        </ul>
+      </nav>
+
+      <div class="timetable">
+
+        <!-- Schedule Top Navigation -->
+        <nav class="nav nav-tabs">
+          <a class="nav-link" v-bind:class="{active: day === 'Monday'}" v-on:click="setDay('Monday')">Mon</a>
+          <a class="nav-link" v-bind:class="{active: day === 'Tuesday'}" v-on:click="setDay('Tuesday')">Tue</a>
+          <a class="nav-link" v-bind:class="{active: day === 'Wednesday'}" v-on:click="setDay('Wednesday')">Wed</a>
+          <a class="nav-link" v-bind:class="{active: day === 'Thursday'}" v-on:click="setDay('Thursday')">Thu</a>
+          <a class="nav-link" v-bind:class="{active: day === 'Friday'}" v-on:click="setDay('Friday')">Fri</a>
+          <a class="nav-link" v-bind:class="{active: day === 'Saturday'}" v-on:click="setDay('Saturday')">Sat</a>
+          <a class="nav-link" v-bind:class="{active: day === 'Sunday'}" v-on:click="setDay('Sunday')">Sun</a>
+        </nav>
+
+        <div class="tab-content">
+          <div class="tab-pane show active">
+            <div class="row">
+              <span v-if="day === 'Friday'" style="margin: auto; padding-top: 30px;">No Classes On This Day</span>
+              
+              <!-- Reg Session 3:00PM -->
+              <div class="col-md-6" v-if="day === 'Wednesday'">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">3:00pm - 4:00pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '3:00 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reg Session 3:30PM -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">3:30pm - 4:30pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '3:30 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reg Session 4PM -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">4:00pm - 5:00pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '4:00 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reg Session 4:30pm -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">4:30pm - 5:30pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '4:30 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reg Session 5pm -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">5:00pm - 6:00pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '5:00 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reg Session 5:30PM -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">5:30pm - 6:30pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '5:30 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reg Session 6pm -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">6:00pm - 7:00pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '6:00 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- High School Hour 7:00 -->
+              <div class="col-md-6" v-if="weekday">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/hs.png" alt="High School Session Image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">7:00pm - 8:00pm</div>
+                    <div class="timetable-item-name">High School Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '7:00 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Weekend 10AM -->
+              <div class="col-md-6" v-if="weekend">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">10:00am - 11:00am</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '10:00 AM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weekend 10:30AM -->
+              <div class="col-md-6" v-if="weekend">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">10:30am - 11:30am</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '10:30 AM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weekend 11:00AM -->
+              <div class="col-md-6" v-if="weekend">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">11:00am - 12:00pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '11:00 AM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weekend 11:30AM -->
+              <div class="col-md-6" v-if="weekend">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">11:30am - 12:30pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '11:30 AM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weekend 12:00PM -->
+              <div class="col-md-6" v-if="weekend">
+                <div class="timetable-item">
+                  <div class="timetable-item-img">
+                    <img src="img/session.jpg" alt="Session image A plus">
+                  </div>
+                  <div class="timetable-item-main">
+                    <div class="timetable-item-time">12:00pm - 1:00pm</div>
+                    <div class="timetable-item-name">Regular Session</div>
+                    <button class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#eventDetails"
+                      data-title="Book Your Session"
+                      v-on:click="time = '12:00 PM'"
+                      >Book</button>
+                    <div class="timetable-item-like">
+                      <div class="timetable-item-like-count"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="eventDetails" class="modal fade" role="dialog" aria-hidden="true">
+      <div class="modal-dialog event-details" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Book Your Session</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="description">Select student and confirm date and time.</p>
+
+            <div class="row">
+              <div class="col-sm-5 order-sm-2">
+                <img class="modal-img" src="img/teaching.jpg" alt="Event Details">
+              </div>
+              <div class="col-sm-7 order-sm-1">
+                <h6>Select Student:</h6>
+                <select name="student" id="student" v-model="student" style="width: 200px; margin-bottom: 25px">
+                  <option disabled value="">Select Student...</option>
+                  <option v-for="student in students" v-bind:value="student">{{student.first_name}}</option>
+                </select>
+                <h6>When and Where</h6>
+                <ul class="timetable">
+                  <li>{{day}}: {{time}} (Mathnasium OPRF - 
+                    <a 
+                    href="https://www.google.com/maps/dir//Mathnasium+of+Oak+Park%2F+River+Forest,+1101+Chicago+Ave,+Oak+Park,+IL+60302/@41.8940984,-87.8029813,15z/data=!4m9!4m8!1m0!1m5!1m1!1s0x880e34c445e6e245:0x5664a13c819ae5f!2m2!1d-87.8029813!2d41.8940984!3e0"
+                    target="_blank"
+                    >address details</a>)
+                  </li>
+                </ul>
+                <p class="important-text">See you soon!</p>
+                <button data-dismiss="modal" class="btn btn-primary btn-book" v-on:click="bookSession()">Book</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+</template>
+
+<template id="schedule">
+  <div class="vue-component">
+    <section data-scroll-index="3" class="schedule content-block">
+      <div class="container">
+        <h2 data-aos="zoom-in-up">Schedule</h2>
+        <div class="timetable">
+
+          <!-- Schedule Top Navigation -->
+          <nav class="nav nav-tabs">
+            <a class="nav-link" v-bind:class="{active: tab === 'history'}" v-on:click="setTab('history')">Booking History</a>
+            <a class="nav-link" v-bind:class="{active: tab === 'upcoming'}" v-on:click="setTab('upcoming')">Upcoming Sessions</a>
+          </nav>
+
+          <div class="tab-content">
+            <div class="tab-pane show active">
+              <div class="row">
+
+                <!-- Booking History -->
+                <table class="table table-hover table-striped" v-if="bookings && tab === 'history'" style="margin-top: 30px">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Student</th>
+                      <th scope="col">Booked By</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="booking in bookings" v-if="booking.date < Date()">
+                      <th scope="row">{{booking.date}}</th>
+                      <td>{{booking.time}}</td>
+                      <td>{{booking.student}}</td>
+                      <td>{{booking.booked_by}}</td>
+                      <td>{{booking.status}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Upcoming Sessions -->
+                <table class="table table-hover table-striped" v-if="bookings && tab === 'upcoming'" style="margin-top: 30px">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Student</th>
+                      <th scope="col">Booked By</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="booking in bookings" v-if="booking.date > Date()">
+                      <th scope="row">{{booking.date}}</th>
+                      <td>{{booking.time}}</td>
+                      <td>{{booking.student}}</td>
+                      <td>{{booking.booked_by}}</td>
+                      <td>{{booking.status}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</template>
+
+<template id="auth-page">
+  <div class="vue-component">
+    <section data-scroll-index="3" class="prices content-block">
+      <div class="container">
+        <h2 data-aos="zoom-in-up">Signup / Login</h2>
+
+        <div class="row">
+
+          <!-- Login -->
+          <div class="col-md-6">
+            <div class="price-option">
+              <h3 class="price-option-name">Login</h3>
+              <div class="price-option-main">
+                <div class="price-option-features">
+                  <ul v-for="error in loginErrors" v-if="loginErrors">
+                    <li class="text-danger">Uh-oh, looks like there was an issue: {{ error }}</li>
+                  </ul>
+                  <div style="margin-bottom: 20px">
+                    <p>Welcome back! </br> Please enter your email and password below:</p>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4">Email:</label>
+                    <input type="email" v-model="loginEmail" class="col-md-7">
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4">Password:</label>
+                    <input type="password" v-model="loginPassword" class="col-md-7">
+                  </div>
+                </div>
+                <button class="btn btn-default btn-join" v-on:click="submitLogin()">Login</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signup -->
+          <div class="col-md-6">
+            <div class="price-option">
+              <h3 class="price-option-name highlighted">Signup</h3>
+              <div class="price-option-main">
+
+                <div class="price-option-features">
+                  <ul v-if="signupErrors">
+                    Uh-oh, looks like there was an issue:
+                    <li class="text-danger" v-for="error in signupErrors">{{ error }}</li>
+                  </ul>
+                  <div style="margin-bottom: 20px">
+                    <p>Welcome to "Math Booking" </br> Please enter your email to get started:</p>
+                  </div>
+
+                  <!-- Maybe only add users to account from profile page? -->
+                  <!-- <div class="form-group">
+                    <label class="col-md-4">Account:</label> 
+                    <input type="text" v-model="account" class="col-md-7">
+                  </div> -->
+
+                  <div class="form-group">
+                    <label class="col-md-3">Email:</label>
+                    <input type="email" v-model="signupEmail" class="col-md-8" style="margin-bottom: 20px">
+                  </div>
+
+                <button class="btn btn-primary btn-join" data-toggle="modal"
+                   data-target="#eventDetails"
+                   data-title="Signup"
+                   >Signup</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Signup Modal -->
+        <div id="eventDetails" class="modal fade" role="dialog" aria-hidden="true">
+          <div class="modal-dialog event-details" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Signup</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="description">Please enter your information to create your new user account:</p>
+
+                <div class="row">
+                  <div class="col-sm-5 order-sm-2">
+                    <img class="modal-img" src="img/a-plus-outside.jpg" alt="A-Plus mascot outside">
+                  </div>
+                  <div class="col-sm-7 order-sm-1">
+
+                  <div class="form-group">
+                    <input type="text" v-model="firstName" class="col-md-7" placeholder="First Name">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" v-model="lastName" class="col-md-7" placeholder="Last Name">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" v-model="accountName" class="col-md-7" placeholder="Account Name (i.e. family name)">
+                  </div>
+                   <div class="form-group">
+                    <select name="relationship" id="relationship" v-model="relationship">
+                      <option disabled value="">Relationship to student...</option>
+                      <option value="parent">Parent</option>
+                      <option value="grandparent">Grandparent</option>
+                      <option value="babysitter">Babysitter</option>
+                      <option value="sibling">Sibling</option>
+                      <option value="friend">Friend</option>
+                      <option value="aunt">Aunt</option>
+                      <option value="uncle">Uncle</option>
+                      <option value="student">Student</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="tel" v-model="phoneNumber" class="col-md-7" placeholder="Phone Number (xxx) xxx-xxxx">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" v-model="password" class="col-md-7" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" v-model="passwordConfirmation" class="col-md-7" placeholder="Enter password again">
+                  </div>
+                    <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="submitSignup()">Sign Up!</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</template>

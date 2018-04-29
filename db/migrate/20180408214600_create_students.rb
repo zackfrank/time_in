@@ -5,6 +5,7 @@ class CreateStudents < ActiveRecord::Migration[5.1]
       t.string :last_name
       t.boolean :high_school
       t.integer :account_id
+      t.date :birthday
       t.boolean :active?
 
       t.timestamps
