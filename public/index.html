@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.min.css">
+  <link rel="stylesheet" href="animations.css">
 
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
@@ -55,6 +56,7 @@
             <li><a href="/#/book" class="nav-link" v-on:click="setPage('book')" v-bind:class="{ active: (page === 'book') }">Book</a></li>
             <li><a href="/#/schedule" class="nav-link" v-on:click="setPage('schedule')" v-bind:class="{ active: (page === 'schedule') }">My Schedule</a></li>
             <li><a href="/#/auth" class="nav-link" v-on:click="setPage('auth')" v-bind:class="{ active: (page === 'auth') }">Signup/Login</a></li>
+            <li><a href="/#/admin" class="nav-link" v-on:click="setPage('admin')" v-bind:class="{ active: (page === 'admin') }" v-if="admin">Admin</a></li>
             <li><a href="/#/logout" class="nav-link">Logout</a></li>
           </ul>
         </div>
@@ -396,10 +398,10 @@
       <h2 data-aos="zoom-in-up">Booking</h2>
       
       <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="">Previous</a></li>
-          <li class="page-item"><a class="page-link">Date</a></li>
-          <li class="page-item"><a class="page-link" href="">Next</a></li>
+        <ul class="pagination justify-content-center">
+          <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('previous')">Previous</a></li>
+          <li class="page-item"><a class="page-link">Week of: {{monday.date}}</a></li>
+          <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('next')">Next</a></li>
         </ul>
       </nav>
 
@@ -407,312 +409,60 @@
 
         <!-- Schedule Top Navigation -->
         <nav class="nav nav-tabs">
+          <a class="nav-link" v-bind:class="{active: day === 'Sunday'}" v-on:click="setDay('Sunday')">Sun</a>
           <a class="nav-link" v-bind:class="{active: day === 'Monday'}" v-on:click="setDay('Monday')">Mon</a>
           <a class="nav-link" v-bind:class="{active: day === 'Tuesday'}" v-on:click="setDay('Tuesday')">Tue</a>
           <a class="nav-link" v-bind:class="{active: day === 'Wednesday'}" v-on:click="setDay('Wednesday')">Wed</a>
           <a class="nav-link" v-bind:class="{active: day === 'Thursday'}" v-on:click="setDay('Thursday')">Thu</a>
           <a class="nav-link" v-bind:class="{active: day === 'Friday'}" v-on:click="setDay('Friday')">Fri</a>
           <a class="nav-link" v-bind:class="{active: day === 'Saturday'}" v-on:click="setDay('Saturday')">Sat</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Sunday'}" v-on:click="setDay('Sunday')">Sun</a>
         </nav>
-
+        
+        <!-- Booking Area -->
         <div class="tab-content">
           <div class="tab-pane show active">
-            <div class="row">
-              <span v-if="day === 'Friday'" style="margin: auto; padding-top: 30px;">No Classes On This Day</span>
+            <div class="row" v-if="day === 'Friday'">
+              <span style="margin: auto; padding-top: 30px;">No Classes On This Day</span>
+            </div>
+            <div class="row" is="transition-group" name="slide-left">
               
-              <!-- Reg Session 3:00PM -->
-              <div class="col-md-6" v-if="day === 'Wednesday'">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">3:00pm - 4:00pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '3:00 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reg Session 3:30PM -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">3:30pm - 4:30pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '3:30 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reg Session 4PM -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">4:00pm - 5:00pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '4:00 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reg Session 4:30pm -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">4:30pm - 5:30pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '4:30 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reg Session 5pm -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">5:00pm - 6:00pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '5:00 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reg Session 5:30PM -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">5:30pm - 6:30pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '5:30 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Reg Session 6pm -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">6:00pm - 7:00pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '6:00 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- High School Hour 7:00 -->
-              <div class="col-md-6" v-if="weekday">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/hs.png" alt="High School Session Image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">7:00pm - 8:00pm</div>
-                    <div class="timetable-item-name">High School Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '7:00 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               
-              <!-- Weekend 10AM -->
-              <div class="col-md-6" v-if="weekend">
+              <!-- Session Loop Segment -->
+              
+              <div class="col-md-6" v-for="ar in weeklyAttendanceRecords" v-if="day === ar.weekday" v-bind:key="ar.id">
                 <div class="timetable-item">
                   <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
+                    <img src="img/session.jpg" alt="Session image A plus" v-if="!ar.high_school">
+                    <img src="img/hs.png" alt="High School Session Image A plus" v-if="ar.high_school">
                   </div>
                   <div class="timetable-item-main">
-                    <div class="timetable-item-time">10:00am - 11:00am</div>
-                    <div class="timetable-item-name">Regular Session</div>
+                    <div class="timetable-item-time">{{ar.time}}</div>
+                    <div class="timetable-item-name">
+                      <span v-if="!ar.high_school">Regular Session</span>
+                      <span v-if="ar.high_school">High School Session</span>
+                    </div>
                     <button class="btn btn-primary btn-book" 
                       data-toggle="modal"
                       data-target="#eventDetails"
                       data-title="Book Your Session"
-                      v-on:click="time = '10:00 AM'"
+                      v-on:click="setTimeDateGcal(ar.time, ar.date, ar.gcal_date)"
                       >Book</button>
                     <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
+                      <div class="timetable-item-like-count">{{ar.date}}</div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <!-- Weekend 10:30AM -->
-              <div class="col-md-6" v-if="weekend">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">10:30am - 11:30am</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '10:30 AM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Weekend 11:00AM -->
-              <div class="col-md-6" v-if="weekend">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">11:00am - 12:00pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '11:00 AM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Weekend 11:30AM -->
-              <div class="col-md-6" v-if="weekend">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">11:30am - 12:30pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '11:30 AM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Weekend 12:00PM -->
-              <div class="col-md-6" v-if="weekend">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">12:00pm - 1:00pm</div>
-                    <div class="timetable-item-name">Regular Session</div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="time = '12:00 PM'"
-                      >Book</button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!-- Session Loop Segment End -->
 
             </div>
           </div>
         </div>
       </div>
     </section>
+    <!-- End of Booking Area -->
 
+    <!-- Select Student and Book Modal -->
     <div id="eventDetails" class="modal fade" role="dialog" aria-hidden="true">
       <div class="modal-dialog event-details" role="document">
         <div class="modal-content">
@@ -724,7 +474,6 @@
           </div>
           <div class="modal-body">
             <p class="description">Select student and confirm date and time.</p>
-
             <div class="row">
               <div class="col-sm-5 order-sm-2">
                 <img class="modal-img" src="img/teaching.jpg" alt="Event Details">
@@ -737,7 +486,7 @@
                 </select>
                 <h6>When and Where</h6>
                 <ul class="timetable">
-                  <li>{{day}}: {{time}} (Mathnasium OPRF - 
+                  <li>{{date}}: {{time}} (Mathnasium OPRF - 
                     <a 
                     href="https://www.google.com/maps/dir//Mathnasium+of+Oak+Park%2F+River+Forest,+1101+Chicago+Ave,+Oak+Park,+IL+60302/@41.8940984,-87.8029813,15z/data=!4m9!4m8!1m0!1m5!1m1!1s0x880e34c445e6e245:0x5664a13c819ae5f!2m2!1d-87.8029813!2d41.8940984!3e0"
                     target="_blank"
@@ -745,14 +494,50 @@
                   </li>
                 </ul>
                 <p class="important-text">See you soon!</p>
-                <button data-dismiss="modal" class="btn btn-primary btn-book" v-on:click="bookSession()">Book</button>
+                <button data-dismiss="modal" 
+                  class="btn btn-primary btn-book" 
+                      data-toggle="modal"
+                      data-target="#sessionBooked"
+                      data-title="Book Your Session"
+                  v-on:click="bookSession()"
+                  >Book</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Select Student and Book Modal End -->
     
+
+    <!-- Add to calendar Modal -->
+    <div id="sessionBooked" class="modal fade" role="dialog" aria-hidden="true">
+      <div class="modal-dialog event-details" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Booking Confirmed!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="description">Add session to your Google calendar.</p>
+            <div class="row">
+              <div class="col-sm-5 order-sm-2">
+                <img class="modal-img" src="img/teaching.jpg" alt="Event Details">
+              </div>
+              <div class="col-sm-7 order-sm-1">
+                <a v-bind:href="gcalUrl" target="_blank">Add to Google Calendar</a>
+                <button data-dismiss="modal" 
+                  class="btn btn-primary btn-book" 
+                  >Done</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add to calendar Modal end -->
 
   </div>
 </template>
@@ -959,5 +744,117 @@
       </div>
     </section>
 
+  </div>
+</template>
+
+<template id="admin">
+  <div class="vue-component">
+    <section data-scroll-index="3" class="schedule content-block">
+      <div class="container">
+        <h2 data-aos="zoom-in-up">Admin Page</h2>
+        <div class="timetable">
+
+          <!-- Schedule Top Navigation -->
+          <nav class="nav nav-tabs" style="margin-bottom: 25px">
+            <a class="nav-link" v-bind:class="{active: tab === 'view'}" v-on:click="setTab('view')">View Schedule</a>
+            <a class="nav-link" v-bind:class="{active: tab === 'users'}" v-on:click="setTab('users')">Manage Users</a>
+            <a class="nav-link" v-bind:class="{active: tab === 'schedule'}" v-on:click="setTab('schedule')">Manage Schedule</a>
+          </nav>
+
+          <div class="tab-content">
+            <div class="tab-pane show active">
+              
+              <!-- VIEW SCHEDULE -->
+              <nav aria-label="Page navigation" v-if="tab === 'view'">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item"><a class="page-link" href="/#/admin" v-on:click="setWeekOffset('previous')">Previous</a></li>
+                  <li class="page-item"><a class="page-link">Week of: {{sunday.date}}</a></li>
+                  <li class="page-item"><a class="page-link" href="/#/admin" v-on:click="setWeekOffset('next')">Next</a></li>
+                </ul>
+              </nav>        
+      
+              <div class="row" v-if="tab === 'view'"> 
+                
+              </div>
+
+              <!-- STUDENT PROFILES -->
+              <div class="row" v-if="tab === 'students'"> 
+
+                <div class="col-md-4" v-for="student in students">
+                  <div class="event">
+                    <div class="event-picture">
+                      <img src="img/larry-float.jpg" alt="Larry the A plus floating">
+                    </div>
+                    <div class="event-info">
+                      <div class="event-date">Student</div>
+                      <h6>{{student.first_name}} {{student.last_name}}</h6>
+                      <div class="main-content">
+                        <p>Birthday: {{student.birthday}}</p>
+                        <p v-if="student.high_school">High School Program</p>
+                      </div>
+                      <div class="row event-actions">
+                        <div class="col-lg-6">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#eventDetails"
+                             data-title="IDance Yoga Festival"
+                             data-img="img/event-2.jpg"
+                            >Deactivate</a>
+                        </div>
+                        <div class="col-lg-6">
+                          <a href="#" class="btn btn-default">Edit Details</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- ACCOUNT PROFILE --> 
+              <h2 data-aos="zoom-in-up" v-if="tab === 'account'">The {{account.name}} Account</h2>
+
+              <div class="row" v-if="tab === 'account'"> 
+                <div style="margin: auto; width: 40%" v-for="person in account.users" v-if="person.first_name !== user.first_name">
+                  <div class="event">
+                    <div class="event-picture">
+                      <img src="img/larry-float.jpg" alt="Larry the A plus floating">
+                    </div>
+                    <div class="event-info">
+                      <div class="event-date">{{person.relationship}}</div>
+                      <h6>{{person.first_name}} {{person.last_name}}</h6>
+                      <div class="main-content">
+                        <p>Email: {{person.email}}</p>
+                        <p> <span v-if="person.active">Active</span><span v-if="!person.active">Inactive</span></p>
+                      </div>
+                      <div class="row event-actions">
+                        <div class="col-lg-6">
+                          <a href="#"
+                             class="btn btn-light"
+                             data-toggle="modal"
+                             data-target="#eventDetails"
+                             data-title="IDance Yoga Festival"
+                             data-img="img/event-2.jpg"
+                            >Deactivate</a>
+                        </div>
+                        <div class="col-lg-6">
+                          <a href="#" class="btn btn-default">Edit Details</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            <!-- COMPLETE END OF PROFILE CONTENT -->
+            </div>
+          </div>
+        </div>
+                
+      </div>
+
+
+    </section>
   </div>
 </template>

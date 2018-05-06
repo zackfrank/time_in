@@ -1,4 +1,5 @@
 class Booking < ApplicationRecord
+  require 'twilio-ruby'
   belongs_to :student
   belongs_to :user
   belongs_to :attendance_record
@@ -11,6 +12,22 @@ class Booking < ApplicationRecord
   def current_attendance
     bookings = Bookings.where(attendance_record_id: ar.id)
     bookings.length
+  end
+
+  def send_confirmation_text(date, time, id)
+    account_sid = ENV['account_sid']
+    auth_token = ENV['auth_token']
+    client = Twilio::REST::Client.new(account_sid, auth_token)
+
+    from = ENV['twilio_number'] # Your Twilio number
+    to = ENV['my_phone_number'] # Your mobile phone number
+    student = Student.find(id).first_name
+
+    client.messages.create(
+    from: from,
+    to: to,
+    body: "Mathnasium session booked for #{student} at #{time} on #{date}."
+    )
   end
 
   def as_json

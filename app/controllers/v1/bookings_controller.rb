@@ -8,7 +8,7 @@ class V1::BookingsController < ApplicationController
 
   def create
     booking = Booking.new(
-      student_id: Student.find_by(first_name: params[:student]).id,
+      student_id: params[:student_id],
       user_id: current_user.id,
       admin_booking: false
       )
@@ -37,6 +37,7 @@ class V1::BookingsController < ApplicationController
     end
 
     if booking.save
+      booking.send_confirmation_text(params[:date], params[:time], params[:student_id])
       render json: booking.as_json
     else
       render json: {errors: booking.errors.full_messages}, status: :bad_request

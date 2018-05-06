@@ -74,16 +74,20 @@ var Booking = {
   template: "#booking",
   data: function() {
     return {
+      attendanceRecords: [],
       weekend: false,
       weekday: true,
-      accountId: "",
+      accountId: null,
       day: "Monday",
-      time: "",
-      date: "",
+      time: null,
+      date: null,
+      formattedDate: null,
       students: null,
-      student: "",
-      bookingResponse: "",
-      errors: ""
+      student: { first_name: "Blank" },
+      bookingResponse: null,
+      errors: null,
+      weekOffset: 0,
+      gcalDate: null
     };
   },
   created: function() {
@@ -94,14 +98,26 @@ var Booking = {
         console.log(this.students);
       }.bind(this)
     );
+    axios.get("v1/attendance_records").then(
+      function(response) {
+        this.attendanceRecords = response.data;
+        console.log(this.attendanceRecords);
+      }.bind(this)
+    );
   },
   methods: {
+    setTimeDateGcal: function(time, date, gcal) {
+      this.time = time;
+      this.date = date;
+      this.gcalDate = gcal;
+    },
     bookSession: function() {
       var params = {
         time: this.time,
-        date: "2018-4-30",
-        student: this.student
+        date: this.date,
+        student_id: this.student.id
       };
+      console.log(params);
       axios
         .post("v1/bookings", params)
         .then(
@@ -129,9 +145,40 @@ var Booking = {
         this.weekend = false;
         this.weekday = false;
       }
+    },
+    setWeekOffset: function(direction) {
+      if (direction === "next") {
+        this.weekOffset += 1;
+        console.log(this.weekOffset);
+      } else {
+        if (this.weekOffset !== 0) {
+          this.weekOffset -= 1;
+          console.log(this.weekOffset);
+        }
+      }
     }
   },
-  computed: {}
+  computed: {
+    weeklyAttendanceRecords: function() {
+      return this.attendanceRecords.filter(
+        function(ar) {
+          return ar.week_number === ar.current_week_number + this.weekOffset;
+        }.bind(this)
+      );
+    },
+    monday: function() {
+      return this.weeklyAttendanceRecords[7];
+    },
+    gcalUrl: function() {
+      var url =
+        "http://www.google.com/calendar/event?action=TEMPLATE&text=" +
+        this.student.first_name +
+        "%27s%20Mathnasium%20Session&dates=" +
+        this.gcalDate +
+        "&location=1101%20Chicago%20Ave%2C%20Oak%20Park%2C%20IL";
+      return url;
+    }
+  }
 };
 
 var AuthPage = {
@@ -232,6 +279,54 @@ var LogoutPage = {
   }
 };
 
+var AdminPage = {
+  template: "#admin",
+  data: function() {
+    return {
+      attendanceRecords: [],
+      tab: "view",
+      weekOffset: 0
+    };
+  },
+  created: function() {
+    axios.get("/v1/attendance_records").then(
+      function(response) {
+        this.attendanceRecords = response.data;
+        console.log(this.attendanceRecords);
+      }.bind(this)
+    );
+  },
+  methods: {
+    setTab: function(tab) {
+      this.tab = tab;
+    },
+    setWeekOffset: function(direction) {
+      if (direction === "next") {
+        this.weekOffset += 1;
+        console.log(this.weekOffset);
+      } else {
+        this.weekOffset -= 1;
+        console.log(this.weekOffset);
+      }
+    },
+    printSunday: function() {
+      console.log(this.sunday);
+    }
+  },
+  computed: {
+    weeklyAttendanceRecords: function() {
+      return this.attendanceRecords.filter(
+        function(ar) {
+          return ar.week_number === ar.current_week_number + this.weekOffset;
+        }.bind(this)
+      );
+    },
+    sunday: function() {
+      return this.weeklyAttendanceRecords[0];
+    }
+  }
+};
+
 var router = new VueRouter({
   routes: [
     { path: "/", component: HomePage },
@@ -239,7 +334,8 @@ var router = new VueRouter({
     { path: "/schedule", component: Schedule },
     { path: "/profile", component: Profile },
     { path: "/auth", component: AuthPage },
-    { path: "/logout", component: LogoutPage }
+    { path: "/logout", component: LogoutPage },
+    { path: "/admin", component: AdminPage }
   ],
   scrollBehavior: function(to, from, savedPosition) {
     return { x: 0, y: 0 };
@@ -251,7 +347,8 @@ var app = new Vue({
   router: router,
   data: function() {
     return {
-      page: localStorage.getItem("page") || "home"
+      page: localStorage.getItem("page") || "home",
+      admin: true
     };
   },
   created: function() {
@@ -267,4 +364,9 @@ var app = new Vue({
     },
     bookingButton: function() {}
   }
+  // computed: {
+  //   pageSet: function() {
+  //     localStorage.setItem("page", window.location.hash);
+  //   }
+  // }
 });

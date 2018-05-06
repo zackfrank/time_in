@@ -30,6 +30,6 @@ Rails.application.routes.draw do
     post "/bookings" => "bookings#create"
     patch "/bookings/:id" => "bookings#update"
     get "/bookings/:id" => "bookings#show"
-    delete "/bookings/:id" => "bookings#destroy"    
+    delete "/bookings/:id" => "bookings#destroy" 
   end
 end

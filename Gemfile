@@ -20,6 +20,8 @@ gem 'puma', '~> 3.7'
 gem 'bcrypt', '~> 3.1.7'
 gem 'knock'
 gem 'unirest'
+gem 'twilio-ruby'
+gem 'figaro'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

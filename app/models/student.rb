@@ -5,6 +5,7 @@ class Student < ApplicationRecord
 
   def as_json
     {
+      id: id,
       first_name: first_name,
       last_name: last_name,
       birthday: birthday.strftime("%m/%d/%Y"),
