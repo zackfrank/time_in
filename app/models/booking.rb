@@ -14,6 +14,10 @@ class Booking < ApplicationRecord
     bookings.length
   end
 
+  def booked_by
+    user.first_name + " " + user.last_name
+  end
+
   def send_confirmation_text(date, time, id)
     account_sid = ENV['account_sid']
     auth_token = ENV['auth_token']
@@ -37,7 +41,7 @@ class Booking < ApplicationRecord
     {
       id: id,
       student: student.first_name,
-      booked_by: user.first_name + " " + user.last_name,
+      booked_by: booked_by,
       date: ar.date.strftime("%a %b %e %Y"),
       time: ar.time,
       status: status,

@@ -39,8 +39,10 @@ class AttendanceRecord < ApplicationRecord
       current_week_number: Time.now.strftime("%U").to_i,
       bookings: bookings.map {|booking| {
         student: booking.student.first_name + " " + booking.student.last_name,
+        booked_by: booking.booked_by,
         birthday: booking.student.birthday,
-        high_school: booking.student.high_school} 
+        high_school: booking.student.high_school,
+        status: booking.status} 
       }
     }
   end

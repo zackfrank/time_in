@@ -78,7 +78,7 @@ var Booking = {
       weekend: false,
       weekday: true,
       accountId: null,
-      day: "Monday",
+      day: "Sunday",
       time: null,
       date: null,
       formattedDate: null,
@@ -166,8 +166,8 @@ var Booking = {
         }.bind(this)
       );
     },
-    monday: function() {
-      return this.weeklyAttendanceRecords[7];
+    sunday: function() {
+      return this.weeklyAttendanceRecords[0];
     },
     gcalUrl: function() {
       var url =

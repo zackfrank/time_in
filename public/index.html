@@ -400,7 +400,7 @@
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
           <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('previous')">Previous</a></li>
-          <li class="page-item"><a class="page-link">Week of: {{monday.date}}</a></li>
+          <li class="page-item"><a class="page-link">Week of: {{sunday.date}}</a></li>
           <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('next')">Next</a></li>
         </ul>
       </nav>
@@ -774,7 +774,37 @@
               </nav>        
       
               <div class="row" v-if="tab === 'view'"> 
-                
+                <table class="table table-hover table-striped" v-if="weeklyAttendanceRecords && tab === 'view'" style="margin-top: 30px">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Student</th>
+                      <th scope="col">Birthday?</th>
+                      <th scope="col">Booked By</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody v-for="ar in weeklyAttendanceRecords">
+                    <tr>
+                      <th scope="row">{{ar.date}}</th>
+                      <th scope="row">{{ar.time}}</th>
+                      <th scope="row"></th>
+                      <th scope="row"></th>
+                      <th scope="row"></th>
+                      <th scope="row"></th>
+                    </tr>
+                    <tr v-for="booking in ar.bookings">
+                      <td></td>
+                      <td></td>
+                      <td>{{booking.student}}</td>
+                      <td v-if="booking.birthday === ar.date">TODAY !!!!!</td>
+                      <td v-if="booking.birthday !== ar.date">Not Today :(</td>
+                      <td>{{booking.booked_by}}</td>
+                      <td>{{booking.status}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
               <!-- STUDENT PROFILES -->
