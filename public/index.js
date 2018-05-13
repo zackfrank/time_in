@@ -1,4 +1,4 @@
-/* global Vue, VueRouter, axios */
+/* global Vue, VueRouter, axios, google */
 
 var HomePage = {
   template: "#home-page",
@@ -51,8 +51,10 @@ var Schedule = {
   template: "#schedule",
   data: function() {
     return {
-      bookings: null,
-      tab: "history"
+      bookings: [],
+      tab: "history",
+      response: "",
+      postOptInMessage: ""
     };
   },
   created: function() {
@@ -65,6 +67,32 @@ var Schedule = {
   methods: {
     setTab: function(tab) {
       this.tab = tab;
+    },
+    takeSession: function(id) {
+      var params = {
+        status: "Booked"
+      };
+      axios.patch("/v1/bookings/" + id, params).then(
+        function(response) {
+          this.response = response.data;
+          var booking = this.bookings.filter(booking => booking.id === id);
+          booking[0].status = "Booked";
+          this.postOptInMessage = "Session booked!";
+        }.bind(this)
+      );
+    },
+    cancelSession: function(id) {
+      var params = {
+        status: "Cancelled"
+      };
+      axios.patch("/v1/bookings/" + id, params).then(
+        function(response) {
+          this.response = response.data;
+          var booking = this.bookings.filter(booking => booking.id === id);
+          booking[0].status = "Cancelled";
+          this.postOptInMessage = "Session cancelled. Thank you!";
+        }.bind(this)
+      );
     }
   },
   computed: {}
@@ -75,17 +103,17 @@ var Booking = {
   data: function() {
     return {
       attendanceRecords: [],
-      weekend: false,
-      weekday: true,
       accountId: null,
       day: "Sunday",
       time: null,
       date: null,
+      ar_id: null,
       formattedDate: null,
       students: null,
       student: { first_name: "Blank" },
-      bookingResponse: null,
+      booking: {},
       errors: null,
+      error: "",
       weekOffset: 0,
       gcalDate: null
     };
@@ -106,45 +134,41 @@ var Booking = {
     );
   },
   methods: {
-    setTimeDateGcal: function(time, date, gcal) {
+    setDetails: function(time, date, gcal, arId) {
       this.time = time;
       this.date = date;
       this.gcalDate = gcal;
+      this.ar_id = arId;
     },
     bookSession: function() {
       var params = {
         time: this.time,
         date: this.date,
-        student_id: this.student.id
+        student_id: this.student.id,
+        ar_id: this.ar_id
       };
       console.log(params);
       axios
         .post("v1/bookings", params)
         .then(
           function(response) {
-            this.bookingResponse = response;
-            console.log(response);
+            this.booking = response.data;
+            if (response.data.error) {
+              this.error = response.data.error;
+              console.log(this.error);
+            }
+            console.log(this.booking);
           }.bind(this)
         )
         .catch(
           function(error) {
             this.errors = error.response.data.errors;
+            console.log(this.errors);
           }.bind(this)
         );
     },
     setDay: function(day) {
       this.day = day;
-      console.log(this.day);
-      if (day !== "Saturday" && day !== "Sunday" && day !== "Friday") {
-        this.weekend = false;
-        this.weekday = true;
-      } else if (day === "Saturday" || day === "Sunday") {
-        this.weekend = true;
-        this.weekday = false;
-      } else {
-        this.weekend = false;
-        this.weekday = false;
-      }
     },
     setWeekOffset: function(direction) {
       if (direction === "next") {
@@ -181,6 +205,377 @@ var Booking = {
   }
 };
 
+var Carpool = {
+  template: "#carpool",
+  data: function() {
+    return {
+      bookings: [],
+      booking: {},
+      carpools: [],
+      carpool: {},
+      waypoints: [],
+      waypoint: "",
+      carpoolName: "",
+      spots: 3,
+      userAddress: "",
+      start: "Mathnasium Westwood",
+      updateResponse: "",
+      createResponse: ""
+    };
+  },
+  created: function() {
+    axios.get("/v1/bookings/" + this.$route.params.id).then(
+      function(response) {
+        this.booking = response.data;
+        this.userAddress = response.data.user_address;
+        console.log("userAddress:", this.userAddress);
+        console.log("booking", this.booking);
+        var params = {
+          attendance_record_id: this.booking.attendance_record_id
+        };
+        console.log(params);
+        axios.get("/v1/carpools", { params: params }).then(
+          function(response) {
+            this.carpools = response.data;
+            console.log("carpools at this AR:", this.carpools);
+          }.bind(this)
+        );
+      }.bind(this)
+    );
+  },
+  mounted: function() {
+    var start = this.start;
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var map = new google.maps.Map(document.getElementById("carpoolmap"), {
+      zoom: 14,
+      center: { lat: 41.894089, lng: -87.802989 }
+    });
+
+    directionsDisplay.setMap(map);
+
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+      var waypts = [];
+
+      directionsService.route(
+        {
+          origin: start,
+          destination: "1101 Chicago Ave 60302",
+          waypoints: waypts,
+          optimizeWaypoints: true,
+          travelMode: "DRIVING"
+        },
+        function(response, status) {
+          if (status === "OK") {
+            directionsDisplay.setDirections(response);
+            var route = response.routes[0];
+          } else {
+            window.alert("Directions request failed due to " + status);
+          }
+        }
+      );
+    }
+  },
+  methods: {
+    setStart: function() {
+      var start = this.carpool.start;
+
+      var map = new google.maps.Map(document.getElementById("carpoolmap"), {
+        zoom: 14,
+        center: { lat: 41.894089, lng: -87.802989 }
+      });
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+
+        directionsService.route(
+          {
+            origin: start,
+            destination: "1101 Chicago Ave 60302",
+            optimizeWaypoints: true,
+            travelMode: "DRIVING"
+          },
+          function(response, status) {
+            if (status === "OK") {
+              directionsDisplay.setDirections(response);
+              var route = response.routes[0];
+              // var summaryPanel = document.getElementById("directions-panel");
+              // summaryPanel.innerHTML = "";
+              // // For each route, display summary information.
+              // for (var i = 0; i < route.legs.length; i++) {
+              //   var routeSegment = i + 1;
+              //   summaryPanel.innerHTML +=
+              //     "<b>Route Segment: " + routeSegment + "</b><br>";
+              //   summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+              //   summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+              //   summaryPanel.innerHTML +=
+              //     route.legs[i].distance.text + "<br><br>";
+              // }
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    },
+    // ^ end of setAddress()
+    addWaypoint: function() {
+      var waypoint = this.userAddress;
+      console.log(waypoint);
+      var start = this.carpool.start;
+
+      var map = new google.maps.Map(document.getElementById("carpoolmap"), {
+        zoom: 14,
+        center: { lat: 41.894089, lng: -87.802989 }
+      });
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+        waypts.push({
+          location: waypoint,
+          stopover: true
+        });
+
+        directionsService.route(
+          {
+            origin: start,
+            destination: "1101 Chicago Ave 60302",
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: "DRIVING"
+          },
+          function(response, status) {
+            if (status === "OK") {
+              directionsDisplay.setDirections(response);
+              var route = response.routes[0];
+              // var summaryPanel = document.getElementById("directions-panel");
+              // summaryPanel.innerHTML = "";
+              // // For each route, display summary information.
+              // for (var i = 0; i < route.legs.length; i++) {
+              //   var routeSegment = i + 1;
+              //   summaryPanel.innerHTML +=
+              //     "<b>Route Segment: " + routeSegment + "</b><br>";
+              //   summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+              //   summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+              //   summaryPanel.innerHTML +=
+              //     route.legs[i].distance.text + "<br><br>";
+              // }
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    },
+    // ^ end of addWaypoint()
+    joinCarpool: function() {
+      this.addWaypoint();
+      var params = {
+        waypoint: this.waypoint,
+        booking_id: this.$route.params.id
+      };
+      axios.patch("/v1/carpools/" + this.carpool.id, params).then(
+        function(response) {
+          this.updateResponse = response.data.carpool;
+          console.log(this.updateResponse);
+        }.bind(this)
+      );
+    },
+    createCarpool: function() {
+      var params = {
+        name: this.carpoolName,
+        ar_id: this.booking.attendance_record_id,
+        start: this.userAddress,
+        spots: this.spots,
+        booking_id: this.booking.id
+      };
+      axios.post("/v1/carpools", params).then(function(response) {
+        this.createResponse = response.data;
+      });
+    },
+    changeStart: function() {}
+  },
+  // ^ end of methods
+  watch: {
+    carpool: function() {
+      this.setStart();
+    }
+  }
+};
+
+var AdminPage = {
+  template: "#admin",
+  data: function() {
+    return {
+      day: "Sunday",
+      attendanceRecords: [],
+      accounts: [],
+      account: "Select Account...",
+      students: [],
+      student: [],
+      error: "",
+      tab: "view",
+      weekOffset: 0,
+      arID: null
+    };
+  },
+  created: function() {
+    axios.get("/v1/attendance_records").then(
+      function(response) {
+        this.attendanceRecords = response.data;
+        console.log(this.attendanceRecords);
+      }.bind(this)
+    );
+    axios.get("/v1/accounts").then(
+      function(response) {
+        this.accounts = response.data;
+        console.log(this.accounts);
+      }.bind(this)
+    );
+    axios.get("/v1/students").then(
+      function(response) {
+        this.students = response.data;
+        console.log(this.students);
+      }.bind(this)
+    );
+  },
+  methods: {
+    setTab: function(tab) {
+      this.tab = tab;
+    },
+    setWeekOffset: function(direction) {
+      if (direction === "next") {
+        this.weekOffset += 1;
+        console.log(this.weekOffset);
+      } else {
+        this.weekOffset -= 1;
+        console.log(this.weekOffset);
+      }
+    },
+    printSunday: function() {
+      console.log(this.sunday);
+    },
+    setDay: function(day) {
+      this.day = day;
+    },
+    toggleAdd: function(id) {
+      if (this.arID === id) {
+        this.arID = null;
+      } else {
+        this.arID = id;
+      }
+    },
+    addStudent: function(date, time) {
+      // getting student ID (because full name was required for value of v-for)
+      var firstAndLast = this.student.split(" ");
+      var studentId = this.students
+        .filter(
+          student =>
+            student.first_name === firstAndLast[0] &&
+            student.last_name === firstAndLast[1]
+        )
+        .map(student => student.id);
+      // booking request
+      var params = {
+        student_id: studentId[0],
+        time: time,
+        date: date,
+        ar_id: this.arID
+      };
+      axios.post("/v1/bookings", params).then(
+        function(response) {
+          this.bookResponse = response.data;
+          if (response.data.error) {
+            this.error = response.data.error;
+          }
+          this.student = [];
+          axios.get("/v1/attendance_records").then(
+            function(response) {
+              this.attendanceRecords = response.data;
+              console.log(this.attendanceRecords);
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
+    removeStudent: function(id) {
+      var params = {
+        status: "Cancelled"
+      };
+      axios.patch("/v1/bookings/" + id, params).then(
+        function(response) {
+          axios.get("/v1/attendance_records").then(
+            function(response) {
+              this.attendanceRecords = response.data;
+              console.log(this.attendanceRecords);
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
+    book: function(id) {
+      var params = {
+        status: "Booked"
+      };
+      axios.patch("/v1/bookings/" + id, params).then(
+        function(response) {
+          axios.get("/v1/attendance_records").then(
+            function(response) {
+              this.attendanceRecords = response.data;
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
+    dbDelete: function(id) {
+      axios.delete("/v1/bookings/" + id).then(
+        function(response) {
+          axios.get("v1/attendance_records").then(
+            function(response) {
+              this.attendanceRecords = response.data;
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
+    standby: function(id) {
+      var params = {
+        status: "Standby"
+      };
+      axios.patch("/v1/bookings/" + id, params).then(
+        function(response) {
+          axios.get("/v1/attendance_records").then(
+            function(response) {
+              this.attendanceRecords = response.data;
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    }
+  },
+  computed: {
+    weeklyAttendanceRecords: function() {
+      return this.attendanceRecords.filter(
+        function(ar) {
+          return ar.week_number === ar.current_week_number + this.weekOffset;
+        }.bind(this)
+      );
+    },
+    sunday: function() {
+      return this.weeklyAttendanceRecords[0];
+    }
+  }
+};
+
 var AuthPage = {
   template: "#auth-page",
   data: function() {
@@ -189,9 +584,11 @@ var AuthPage = {
       lastName: "",
       loginEmail: "",
       signupEmail: "",
-      // account: "",
+      account: "",
       relationship: "",
       phoneNumber: "",
+      address: "",
+      zip: "",
       loginPassword: "",
       password: "",
       passwordConfirmation: "",
@@ -205,8 +602,11 @@ var AuthPage = {
       var params = {
         first_name: this.firstName,
         last_name: this.lastName,
+        account: this.account,
         relationship: this.relationship,
         phone_number: this.phoneNumber,
+        address: this.address,
+        zip: this.zip,
         email: this.signupEmail,
         password: this.password,
         password_confirmation: this.passwordConfirmation
@@ -279,54 +679,6 @@ var LogoutPage = {
   }
 };
 
-var AdminPage = {
-  template: "#admin",
-  data: function() {
-    return {
-      attendanceRecords: [],
-      tab: "view",
-      weekOffset: 0
-    };
-  },
-  created: function() {
-    axios.get("/v1/attendance_records").then(
-      function(response) {
-        this.attendanceRecords = response.data;
-        console.log(this.attendanceRecords);
-      }.bind(this)
-    );
-  },
-  methods: {
-    setTab: function(tab) {
-      this.tab = tab;
-    },
-    setWeekOffset: function(direction) {
-      if (direction === "next") {
-        this.weekOffset += 1;
-        console.log(this.weekOffset);
-      } else {
-        this.weekOffset -= 1;
-        console.log(this.weekOffset);
-      }
-    },
-    printSunday: function() {
-      console.log(this.sunday);
-    }
-  },
-  computed: {
-    weeklyAttendanceRecords: function() {
-      return this.attendanceRecords.filter(
-        function(ar) {
-          return ar.week_number === ar.current_week_number + this.weekOffset;
-        }.bind(this)
-      );
-    },
-    sunday: function() {
-      return this.weeklyAttendanceRecords[0];
-    }
-  }
-};
-
 var router = new VueRouter({
   routes: [
     { path: "/", component: HomePage },
@@ -335,7 +687,8 @@ var router = new VueRouter({
     { path: "/profile", component: Profile },
     { path: "/auth", component: AuthPage },
     { path: "/logout", component: LogoutPage },
-    { path: "/admin", component: AdminPage }
+    { path: "/admin", component: AdminPage },
+    { path: "/carpool/:id", component: Carpool }
   ],
   scrollBehavior: function(to, from, savedPosition) {
     return { x: 0, y: 0 };
@@ -361,8 +714,7 @@ var app = new Vue({
     setPage: function(page) {
       localStorage.setItem("page", page);
       this.page = localStorage.getItem("page");
-    },
-    bookingButton: function() {}
+    }
   }
   // computed: {
   //   pageSet: function() {

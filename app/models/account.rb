@@ -23,7 +23,8 @@ class Account < ApplicationRecord
           first_name: student.first_name, 
           last_name: student.last_name, 
           birthday: student.birthday, 
-          high_school: student.high_school 
+          high_school: student.high_school,
+          active: student.active? 
         }
       }
     }

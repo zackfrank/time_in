@@ -2,54 +2,55 @@ class V1::BookingsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    bookings = Booking.where(user_id: current_user.id)
+    # Get all bookings from all students of current user's account - regardless of who booked (ie admin)
+    bookings = current_user.account.students.map { |student| student.bookings }
+    bookings = bookings.flatten
+
     render json: bookings.as_json
   end
 
   def create
-    booking = Booking.new(
-      student_id: params[:student_id],
-      user_id: current_user.id,
-      admin_booking: false
-      )
-
-    # if attendance_record exists, use id, otherwise create new one
-    if ( ar = AttendanceRecord.find_by(date: params[:date], time: params[:time]) )
-      booking.attendance_record_id = ar.id
-      # if AR at capacity status is "standby_booked", otherwise just "booked"
-      number_currently_attending = Booking.where(attendance_record_id: ar.id).length
-      if current_user.account.admin
-        booking.status = "booked"
-        booking.admin_booking = true
-        ar.capacity += 1
-        ar.save
-      else
-        number_currently_attending < ar.capacity ? booking.status = "booked" : booking.status = "standby-booked"
-      end
+    # Wrapped in 'if/else' to prevent duplicate bookings:
+    if AttendanceRecord.find(params[:ar_id]).bookings.map {|booking| booking.student_id }.include? params[:student_id]
+      render json: {error: "Student is already booked at this time. Please check your schedule or call center."}
     else
-      ar = AttendanceRecord.create(
-        date: params[:date],
-        time: params[:time],
-        capacity: 10
+      booking = Booking.new(
+        student_id: params[:student_id],
+        user_id: current_user.id,
+        attendance_record_id: params[:ar_id],
+        admin_booking: false
         )
-      booking.attendance_record_id = ar.id
-      booking.status = "booked"
-    end
 
-    if booking.save
-      booking.send_confirmation_text(params[:date], params[:time], params[:student_id])
-      render json: booking.as_json
-    else
-      render json: {errors: booking.errors.full_messages}, status: :bad_request
+      # If AR is at capacity, status is "Standby", otherwise just "Booked"
+      # If admin, status is always "Booked". 
+      current_user.account.admin ? booking.status = "Booked" : booking.set_booking_status(params[:ar_id])
+
+      if booking.save
+        booking.send_confirmation_text(params[:date], params[:time], params[:student_id])
+        render json: booking.as_json
+      else
+        render json: {errors: booking.errors.full_messages}, status: :bad_request
+      end
     end
   end
 
   def show
+    booking = Booking.find(params[:id])
+    render json: booking.as_json
+  end
 
+  def update
+    booking = Booking.find(params[:id])
+    booking.status_update(params[:status])
+
+    render json: {message: "Booking successfully updated."}
   end
 
   def destroy
-    
+    booking = Booking.find(params[:id])
+    booking.destroy
+
+    render json: {message: "Booking successfully deleted."}
   end
 
 end

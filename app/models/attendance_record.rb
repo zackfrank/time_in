@@ -1,11 +1,13 @@
 class AttendanceRecord < ApplicationRecord
   has_many :bookings
+  has_many :carpools
   has_many :students, through: :bookings
   has_many :users, through: :bookings
 
   def space_left
     bookings = Booking.where(attendance_record_id: id).length
     remaining_spots = capacity - bookings
+    remaining_spots < 0 ? remaining_spots = 0 : remaining_spots
     return remaining_spots
   end
 
@@ -25,6 +27,20 @@ class AttendanceRecord < ApplicationRecord
     "#{part1}/#{part2}"
   end
 
+  def booking_info(status)
+    bookings.select {|booking| booking.status == status || booking.status == status.capitalize || (booking.status == "Opt-in" && status == "standby") }.map {|booking| {
+      id: booking.id,
+      student_id: booking.student.id,
+      student: booking.student.first_name + " " + booking.student.last_name,
+      booked_by: booking.booked_by,
+      birthday: booking.student.birthday.strftime("%a, %b %e, %Y"),
+      high_school: booking.student.high_school,
+      status: booking.status,
+      updated_at: booking.updated_at
+      }
+    }
+  end
+
   def as_json
     {
       id: id,
@@ -37,12 +53,11 @@ class AttendanceRecord < ApplicationRecord
       high_school: high_school?,
       week_number: date.strftime("%U").to_i,
       current_week_number: Time.now.strftime("%U").to_i,
-      bookings: bookings.map {|booking| {
-        student: booking.student.first_name + " " + booking.student.last_name,
-        booked_by: booking.booked_by,
-        birthday: booking.student.birthday,
-        high_school: booking.student.high_school,
-        status: booking.status} 
+      bookings: 
+      {
+        booked: booking_info("booked").sort {|a, b| a[:updated_at] <=> b[:updated_at]}, 
+        cancelled: booking_info("cancelled").sort {|a, b| a[:updated_at] <=> b[:updated_at]},
+        standby: booking_info("standby").sort {|a, b| a[:updated_at] <=> b[:updated_at]}
       }
     }
   end

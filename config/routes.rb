@@ -31,5 +31,11 @@ Rails.application.routes.draw do
     patch "/bookings/:id" => "bookings#update"
     get "/bookings/:id" => "bookings#show"
     delete "/bookings/:id" => "bookings#destroy" 
+
+    get "/carpools" => "carpools#index"
+    post "/carpools" => "carpools#create"
+    patch "/carpools/:id" => "carpools#update"
+    get "/carpools/:id" => "carpools#show"
+    delete "/carpools/:id" => "carpools#destroy" 
   end
 end

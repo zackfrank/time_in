@@ -9,20 +9,23 @@ class V1::UsersController < ApplicationController
       first_name: params[:first_name],
       last_name: params[:last_name],
       email: params[:email],
+      phone_number: params[:phone_number],
+      address: params[:address],
+      zip: params[:zip],
       password: params[:password],
       password_confirmation: params[:password_confirmation],
       relationship: params[:relationship],
       active?: true
       )
 
-    # if (account = Account.find_by(name: params[:account_name]))
-    #   user.account_id = account.id
-    # elsif params[:account_name]
-    #   account = Account.create(
-    #     name: params[:account_name],
-    #     admin: false
-    #     )
-    # end
+    if (account = Account.find_by(name: params[:account]))
+      user.account_id = account.id
+    elsif params[:account]
+      account = Account.create(
+        name: params[:account],
+        admin: false
+        )
+    end
 
     if user.save
       render json: user.as_json

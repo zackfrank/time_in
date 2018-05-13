@@ -2,7 +2,7 @@ class V1::AccountsController < ApplicationController
   before_action :authenticate_user
   
   def index
-    accounts = Account.all
+    accounts = Account.all.order(:name)
     render json: accounts.as_json
   end
 
