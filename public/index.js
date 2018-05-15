@@ -679,6 +679,7 @@ var AuthPage = {
           localStorage.setItem("jwt", response.data.jwt);
           localStorage.setItem("account_id", response.data.user.account_id);
           localStorage.setItem("id", response.data.user.id);
+          localStorage.setItem("name", response.data.user.first_name);
           console.log(localStorage.getItem("account_id"));
           router.push("/book");
           location.reload();
@@ -730,7 +731,8 @@ var app = new Vue({
   data: function() {
     return {
       admin: true,
-      jwt: ""
+      jwt: "",
+      name: localStorage.getItem("name")
     };
   },
   created: function() {

@@ -57,7 +57,10 @@
             <li><a href="/#/schedule" class="nav-link" v-on:click="setPage('schedule')" v-bind:class="{ active: ($route.path === '/schedule') }">My Schedule</a></li>
             <li><a href="/#/auth" class="nav-link" v-if="!jwt" v-on:click="setPage('auth')" v-bind:class="{ active: ($route.path === '/auth') }">Signup/Login</a></li>
             <li><a href="/#/admin" class="nav-link" v-on:click="setPage('admin')" v-bind:class="{ active: ($route.path === '/admin') }" v-if="admin">Admin</a></li>
-            <li><a href="/#/logout" class="nav-link" v-if="jwt">Logout</a></li>
+            <li v-if="jwt">
+              <a href="/#/logout" class="nav-link" style="display: inline">Logout</a>
+              <span style="color: #f03f33; display: inline">Welcome, {{name}}!</span>
+            </li>
           </ul>
         </div>
       </div>
