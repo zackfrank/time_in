@@ -209,18 +209,18 @@ var Carpool = {
   template: "#carpool",
   data: function() {
     return {
-      bookings: [],
       booking: {},
       carpools: [],
       carpool: {},
-      waypoints: [],
+      initialCarpool: {},
       waypoint: "",
       carpoolName: "",
       spots: 3,
       userAddress: "",
       start: "Mathnasium Westood",
       updateResponse: "",
-      createResponse: ""
+      createResponse: "",
+      selectedCarpool: ""
     };
   },
   created: function() {
@@ -235,6 +235,14 @@ var Carpool = {
           function(response) {
             this.carpools = response.data;
             console.log("at-created carpools:", this.carpools);
+            if (this.booking.carpool) {
+              var carpool = this.carpools.filter(
+                carpool => carpool.id === this.booking.carpool.id
+              );
+            }
+            this.carpool = carpool[0];
+            this.initialCarpool = this.carpool;
+            console.log("carpool if booking has c_id:", this.carpool);
           }.bind(this)
         );
       }.bind(this)
@@ -242,6 +250,7 @@ var Carpool = {
   },
   mounted: function() {
     var start = this.start;
+
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var map = new google.maps.Map(document.getElementById("carpoolmap"), {
@@ -275,6 +284,9 @@ var Carpool = {
     }
   },
   methods: {
+    showCarpool: function() {
+      console.log(this.carpool);
+    },
     setStart: function() {
       var start = this.carpool.start;
       var waypoints = this.carpool.waypoints;
@@ -299,7 +311,6 @@ var Carpool = {
             })
           );
         }
-        console.log("inner waypts:", waypts);
         directionsService.route(
           {
             origin: start,
@@ -388,6 +399,7 @@ var Carpool = {
           console.log("updatedCarpool:", updatedCarpool);
           console.log("this.carpools:", this.carpools);
           this.updateResponse = response.data;
+          this.selectedCarpool = response.data;
           this.carpool = response.data;
         }.bind(this)
       );
@@ -403,6 +415,7 @@ var Carpool = {
       axios.post("/v1/carpools", params).then(
         function(response) {
           this.createResponse = response.data;
+          this.selectedCarpool = response.data;
           this.carpool = response.data;
           this.carpools.push(this.carpool);
           this.carpoolName = "";

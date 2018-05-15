@@ -568,7 +568,7 @@
       <div id="right-panel">
         <h3>Carpools Available:</h3>
         <select id="waypoints" v-model="carpool">
-          <option disabled>Select a Carpool...</option>
+          <option v-bind:value="initialCarpool" disabled>Select a Carpool...</option>
           <option v-bind:value="carpool" v-for="carpool in carpools">Carpool Name: {{carpool.name}}</option>
         </select>
       
@@ -581,37 +581,27 @@
           data-title="CreateCarpool">Create New Carpool
         </button>
         
-        <!-- Carpool Updated Details -->
-        <div v-if="updateResponse">Carpool Updated! Details: 
+        <!-- For Trouble-shooting: -->
+        <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
+        
+        <!-- Carpool Details -->
+        <div v-if="selectedCarpool">
+          <p v-if="updateResponse">Carpool Updated!</p>
+          <p v-if="createResponse">Carpool Created!</p>
+          Carpool Details: 
           <ul>
-            <li>Carpool Name: {{updateResponse.name}}</li>
-            <li>Date/Time: {{updateResponse.date}} at {{updateResponse.time}}</li>
-            <li>Start Address: {{updateResponse.start}}</li>
-            <li>Spots in carpool: {{updateResponse.spots}}</li>
-            <li>Driver: {{updateResponse.bookings[0].booked_by.first_name}} {{updateResponse.bookings[0].booked_by.last_name}}</li>
+            <li>Carpool Name: {{selectedCarpool.name}}</li>
+            <li>Date/Time: {{selectedCarpool.date}} at {{selectedCarpool.time}}</li>
+            <li>Start Address: {{selectedCarpool.start}}</li>
+            <li>Spots in carpool: {{selectedCarpool.spots}}</li>
+            <li>Driver: {{selectedCarpool.bookings[0].booked_by.first_name}} {{selectedCarpool.bookings[0].booked_by.last_name}}</li>
           </ul>
           Students:
           <ul>
-            <li v-for="booking in updateResponse.bookings">{{booking.student}}</li>
+            <li v-for="booking in selectedCarpool.bookings">{{booking.student}}</li>
           </ul>
         </div>
-        <!-- End of Carpool Updated Details -->
-
-        <!-- Carpool Created Details -->
-        <div v-if="createResponse">Carpool Created! Details: 
-          <ul>
-            <li>Carpool Name: {{createResponse.name}}</li>
-            <li>Date/Time: {{createResponse.date}} at {{createResponse.time}}</li>
-            <li>Start Address: {{createResponse.start}}</li>
-            <li>Spots in carpool: {{createResponse.spots}}</li>
-            <li>Driver: {{createResponse.bookings[0].booked_by.first_name}} {{createResponse.bookings[0].booked_by.last_name}}</li>
-          </ul>
-          Students:
-          <ul>
-            <li v-for="booking in createResponse.bookings">{{booking.student}}</li>
-          </ul>
-        </div>
-        <!-- End of Carpool Created Details -->
+        <!-- End of Carpool Details -->
 
         <!-- <div v-if="">No one has created a carpool for this time yet. Feel free to create one!</div> -->
 

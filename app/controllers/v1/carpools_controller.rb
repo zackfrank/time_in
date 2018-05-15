@@ -11,13 +11,21 @@ class V1::CarpoolsController < ApplicationController
   def update
     # refactor by moving logic to model
     carpool = Carpool.find(params[:id])
-    if params[:waypoint]
+    if params[:waypoint] && (params[:waypoint] != "")
       unless (carpool.waypoints.include? params[:waypoint])
         carpool.waypoints << params[:waypoint]
       end
     end
 
-    if params[:start]
+    if params[:start] 
+      # move current starting address into waypoints
+      unless (carpool.waypoints.include? carpool.start)
+        carpool.waypoints << carpool.start
+      end
+      # remove starting address from waypoints (if it's in there)
+      if carpool.waypoints.include? params[:start]
+        carpool.waypoints.delete(params[:start])
+      end
       carpool.start = params[:start]
     end
 

@@ -31,16 +31,26 @@ class Carpool < ApplicationRecord
   # end
 
   # def update_carpool(params)
-  #   @carpool = Carpool.find(params[:id])
-  #   if params[:waypoint]
-  #     unless (@carpool.waypoints.include? params[:waypoint]) do
-  #       @carpool.waypoints << params[:waypoint]
+  #   carpool = Carpool.find(params[:id])
+  #   if params[:waypoint] && (params[:waypoint] != "")
+  #     unless (carpool.waypoints.include? params[:waypoint])
+  #       carpool.waypoints << params[:waypoint]
   #     end
   #   end
-  #   if params[:start]
-  #     @carpool.start = params[:start]
+
+  #   if params[:start] 
+  #     # move current starting address into waypoints
+  #     unless (carpool.waypoints.include? carpool.start)
+  #       carpool.waypoints << carpool.start
+  #     end
+  #     # remove starting address from waypoints (if it's in there)
+  #     if carpool.waypoints.include? params[:start]
+  #       carpool.waypoints.delete(params[:start])
+  #     end
+  #     carpool.start = params[:start]
   #   end
-  #   @carpool.save
+
+  #   carpool.save
   # end
 
   def as_json
