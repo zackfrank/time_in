@@ -17,8 +17,7 @@ class V1::BookingsController < ApplicationController
       booking = Booking.new(
         student_id: params[:student_id],
         user_id: current_user.id,
-        attendance_record_id: params[:ar_id],
-        admin_booking: false
+        attendance_record_id: params[:ar_id]
         )
 
       # If admin, status is always "Booked". 

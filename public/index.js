@@ -143,6 +143,7 @@ var Booking = {
       this.spaceLeft = space;
     },
     bookSession: function() {
+      this.errors = [];
       var params = {
         time: this.time,
         date: this.date,
