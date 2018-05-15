@@ -66,7 +66,7 @@ class Booking < ApplicationRecord
 
   def at_capacity # not being used
     bookings = Bookings.where(attendance_record_id: ar.id)
-    bookings.length < 10 ? true : false
+    bookings.length < booking.attendance_record.capacity ? true : false
   end
 
   def current_attendance

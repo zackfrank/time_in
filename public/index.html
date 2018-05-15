@@ -51,13 +51,13 @@
         <div class="collapse navbar-collapse" id="idanceNav">
           <i class="fa fa-times close-navbar-mobile" aria-hidden="true" data-toggle="collapse" data-target="#idanceNav"></i>
           <ul class="navbar-nav ml-auto">
-            <li><a href="/#/" class="nav-link" v-on:click="setPage('home')" v-bind:class="{ active: (page === 'home') }">Home</a></li>
-            <li><a href="/#/profile" class="nav-link" v-on:click="setPage('profile')" v-bind:class="{ active: (page === 'profile') }">Profile</a></li>
-            <li><a href="/#/book" class="nav-link" v-on:click="setPage('book')" v-bind:class="{ active: (page === 'book') }">Book</a></li>
-            <li><a href="/#/schedule" class="nav-link" v-on:click="setPage('schedule')" v-bind:class="{ active: (page === 'schedule') }">My Schedule</a></li>
-            <li><a href="/#/auth" class="nav-link" v-on:click="setPage('auth')" v-bind:class="{ active: (page === 'auth') }">Signup/Login</a></li>
-            <li><a href="/#/admin" class="nav-link" v-on:click="setPage('admin')" v-bind:class="{ active: (page === 'admin') }" v-if="admin">Admin</a></li>
-            <li><a href="/#/logout" class="nav-link">Logout</a></li>
+            <li><a href="/#/" class="nav-link" v-on:click="setPage('home')" v-bind:class="{ active: ($route.path === '/') }">Home</a></li>
+            <li><a href="/#/profile" class="nav-link" v-on:click="setPage('profile')" v-bind:class="{ active: ($route.path === '/profile') }">Profile</a></li>
+            <li><a href="/#/book" class="nav-link" v-on:click="setPage('book')" v-bind:class="{ active: ($route.path === '/book') }">Book</a></li>
+            <li><a href="/#/schedule" class="nav-link" v-on:click="setPage('schedule')" v-bind:class="{ active: ($route.path === '/schedule') }">My Schedule</a></li>
+            <li><a href="/#/auth" class="nav-link" v-if="!jwt" v-on:click="setPage('auth')" v-bind:class="{ active: ($route.path === '/auth') }">Signup/Login</a></li>
+            <li><a href="/#/admin" class="nav-link" v-on:click="setPage('admin')" v-bind:class="{ active: ($route.path === '/admin') }" v-if="admin">Admin</a></li>
+            <li><a href="/#/logout" class="nav-link" v-if="jwt">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -454,8 +454,10 @@
                       data-toggle="modal"
                       data-target="#eventDetails"
                       data-title="Book Your Session"
-                      v-on:click="setDetails(ar.time, ar.date, ar.gcal_date, ar.id)"
-                      >Book</button>
+                      v-on:click="setDetails(ar.time, ar.date, ar.gcal_date, ar.id, ar.space_left)">
+                      Book
+                      <span v-if="ar.space_left === 0">on Standby</span>
+                    </button>
                     <div class="timetable-item-like">
                       <div class="timetable-item-like-count">{{ar.date}}</div>
                       <div class="timetable-item-like-count">Space Left: {{ar.space_left}}/{{ar.capacity}}</div>
@@ -477,7 +479,10 @@
       <div class="modal-dialog event-details" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Book Your Session</h5>
+            <h5 class="modal-title">
+              Book Your Session
+              <span v-if="spaceLeft === 0">on Standby</span>
+            </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -503,7 +508,15 @@
                     >address details</a>)
                   </li>
                 </ul>
-                <p class="important-text">See you soon!</p>
+                <p class="important-text" v-if="spaceLeft > 0">See you soon!</p>
+                <p class="important-text" v-if="spaceLeft === 0">
+                  In Case a spot opens up for this session:
+                  <ul v-if="spaceLeft === 0">
+                    <li>Watch for texts</li> 
+                    <li>Check your 'Schedule' page</li>
+                  </ul>
+                  <span v-if="spaceLeft === 0">Good luck!</span>
+                </p>
                 <button data-dismiss="modal" 
                   class="btn btn-primary btn-book" 
                       data-toggle="modal"
@@ -582,7 +595,7 @@
         </button>
         
         <!-- For Trouble-shooting: -->
-        <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
+        <button v-on:click="showCarpool()">Console.log Carpool</button>
         
         <!-- Carpool Details -->
         <div v-if="selectedCarpool">

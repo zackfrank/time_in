@@ -108,6 +108,7 @@ var Booking = {
       time: null,
       date: null,
       ar_id: null,
+      spaceLeft: "",
       formattedDate: null,
       students: null,
       student: { first_name: "Blank" },
@@ -134,11 +135,12 @@ var Booking = {
     );
   },
   methods: {
-    setDetails: function(time, date, gcal, arId) {
+    setDetails: function(time, date, gcal, arId, space) {
       this.time = time;
       this.date = date;
       this.gcalDate = gcal;
       this.ar_id = arId;
+      this.spaceLeft = space;
     },
     bookSession: function() {
       var params = {
@@ -286,6 +288,7 @@ var Carpool = {
   methods: {
     showCarpool: function() {
       console.log(this.carpool);
+      console.log(this.$route.path);
     },
     setStart: function() {
       var start = this.carpool.start;
@@ -644,6 +647,7 @@ var AuthPage = {
             this.loginPassword = this.password;
             this.submitLogin();
             router.push("/profile");
+            location.reload();
           }.bind(this)
         )
         .catch(
@@ -677,6 +681,7 @@ var AuthPage = {
           localStorage.setItem("id", response.data.user.id);
           console.log(localStorage.getItem("account_id"));
           router.push("/book");
+          location.reload();
         })
         .catch(
           function(error) {
@@ -699,6 +704,7 @@ var LogoutPage = {
     localStorage.removeItem("account_id");
     localStorage.removeItem("id");
     router.push("/");
+    location.reload();
   }
 };
 
@@ -723,25 +729,15 @@ var app = new Vue({
   router: router,
   data: function() {
     return {
-      page: localStorage.getItem("page") || "home",
-      admin: true
+      admin: true,
+      jwt: ""
     };
   },
   created: function() {
-    var jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      axios.defaults.headers.common["Authorization"] = jwt;
+    this.jwt = localStorage.getItem("jwt");
+    if (this.jwt) {
+      axios.defaults.headers.common["Authorization"] = this.jwt;
     }
   },
-  methods: {
-    setPage: function(page) {
-      localStorage.setItem("page", page);
-      this.page = localStorage.getItem("page");
-    }
-  }
-  // computed: {
-  //   pageSet: function() {
-  //     localStorage.setItem("page", window.location.hash);
-  //   }
-  // }
+  methods: {}
 });

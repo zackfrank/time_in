@@ -21,8 +21,8 @@ class V1::BookingsController < ApplicationController
         admin_booking: false
         )
 
-      # If AR is at capacity, status is "Standby", otherwise just "Booked"
       # If admin, status is always "Booked". 
+      # If AR is at capacity, status is "Standby", otherwise just "Booked"
       current_user.account.admin ? booking.status = "Booked" : booking.set_booking_status(params[:ar_id])
 
       if booking.save
