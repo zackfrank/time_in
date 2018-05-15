@@ -29,7 +29,7 @@ class V1::CarpoolsController < ApplicationController
       booking.save
     end
 
-    render json: {carpool: carpool.as_json}
+    render json: carpool.as_json
   end
 
   def create
@@ -44,7 +44,7 @@ class V1::CarpoolsController < ApplicationController
     booking = Booking.find(params[:booking_id])
     booking.carpool_id = carpool.id
     booking.save
-    
+
     render json: carpool.as_json
   end
 

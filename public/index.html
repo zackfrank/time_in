@@ -580,6 +580,8 @@
           data-target="#createCarpool"
           data-title="CreateCarpool">Create New Carpool
         </button>
+        
+        <!-- Carpool Updated Details -->
         <div v-if="updateResponse">Carpool Updated! Details: 
           <ul>
             <li>Carpool Name: {{updateResponse.name}}</li>
@@ -593,7 +595,24 @@
             <li v-for="booking in updateResponse.bookings">{{booking.student}}</li>
           </ul>
         </div>
-        <div v-if="createResponse">Carpool Created! Details: {{createResponse}}</div>
+        <!-- End of Carpool Updated Details -->
+
+        <!-- Carpool Created Details -->
+        <div v-if="createResponse">Carpool Created! Details: 
+          <ul>
+            <li>Carpool Name: {{createResponse.name}}</li>
+            <li>Date/Time: {{createResponse.date}} at {{createResponse.time}}</li>
+            <li>Start Address: {{createResponse.start}}</li>
+            <li>Spots in carpool: {{createResponse.spots}}</li>
+            <li>Driver: {{createResponse.bookings[0].booked_by.first_name}} {{createResponse.bookings[0].booked_by.last_name}}</li>
+          </ul>
+          Students:
+          <ul>
+            <li v-for="booking in createResponse.bookings">{{booking.student}}</li>
+          </ul>
+        </div>
+        <!-- End of Carpool Created Details -->
+
         <!-- <div v-if="">No one has created a carpool for this time yet. Feel free to create one!</div> -->
 
         <!-- Signup Modal -->
@@ -725,6 +744,7 @@
                       <th scope="col">Student</th>
                       <th scope="col">Booked By</th>
                       <th scope="col">Status</th>
+                      <th scope="col">Carpool</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -736,6 +756,10 @@
                       <td>
                         {{booking.status}}
                         <a href="/#/schedule" style="color: red; font-size: 1.3em; text-decoration: none; margin-left: 8px" v-on:click="cancelSession(booking.id)" v-if="booking.status === 'Booked' || booking.status === 'Standby'">&times;</a>
+                      </td>
+                      <td>
+                        <a v-bind:href=" '/#/carpool/' + booking.id " target="_blank" v-if="booking.status === 'Booked' && booking.carpool === null " class="btn btn-light btn-join" style="color: rgba(240, 63, 51, 0.8)">Join/Create Carpool</a>
+                        <a v-bind:href=" '/#/carpool/' + booking.id " target="_blank" v-if="booking.status === 'Booked' && booking.carpool" class="btn btn-light btn-join" style="color: rgba(16, 68, 85, 0.8)">View Carpool</a>
                       </td>
                     </tr>
                   </tbody>

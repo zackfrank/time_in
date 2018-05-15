@@ -48,6 +48,7 @@ class Carpool < ApplicationRecord
       id: id,
       name: name,
       start: start,
+      waypoints: waypoints,
       date: attendance_record.date.strftime("%a, %b %e, %Y"),
       time: attendance_record.time,
       spots: spots,

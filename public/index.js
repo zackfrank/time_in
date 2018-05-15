@@ -218,7 +218,7 @@ var Carpool = {
       carpoolName: "",
       spots: 3,
       userAddress: "",
-      start: "Mathnasium Westwood",
+      start: "Mathnasium Westood",
       updateResponse: "",
       createResponse: ""
     };
@@ -228,16 +228,13 @@ var Carpool = {
       function(response) {
         this.booking = response.data;
         this.userAddress = response.data.user_address;
-        console.log("userAddress:", this.userAddress);
-        console.log("booking", this.booking);
         var params = {
           attendance_record_id: this.booking.attendance_record_id
         };
-        console.log(params);
         axios.get("/v1/carpools", { params: params }).then(
           function(response) {
             this.carpools = response.data;
-            console.log("carpools at this AR:", this.carpools);
+            console.log("at-created carpools:", this.carpools);
           }.bind(this)
         );
       }.bind(this)
@@ -280,6 +277,7 @@ var Carpool = {
   methods: {
     setStart: function() {
       var start = this.carpool.start;
+      var waypoints = this.carpool.waypoints;
 
       var map = new google.maps.Map(document.getElementById("carpoolmap"), {
         zoom: 14,
@@ -290,61 +288,18 @@ var Carpool = {
       directionsDisplay.setMap(map);
 
       calculateAndDisplayRoute(directionsService, directionsDisplay);
+
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var waypts = [];
-
-        directionsService.route(
-          {
-            origin: start,
-            destination: "1101 Chicago Ave 60302",
-            optimizeWaypoints: true,
-            travelMode: "DRIVING"
-          },
-          function(response, status) {
-            if (status === "OK") {
-              directionsDisplay.setDirections(response);
-              var route = response.routes[0];
-              // var summaryPanel = document.getElementById("directions-panel");
-              // summaryPanel.innerHTML = "";
-              // // For each route, display summary information.
-              // for (var i = 0; i < route.legs.length; i++) {
-              //   var routeSegment = i + 1;
-              //   summaryPanel.innerHTML +=
-              //     "<b>Route Segment: " + routeSegment + "</b><br>";
-              //   summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-              //   summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-              //   summaryPanel.innerHTML +=
-              //     route.legs[i].distance.text + "<br><br>";
-              // }
-            } else {
-              window.alert("Directions request failed due to " + status);
-            }
-          }
-        );
-      }
-    },
-    // ^ end of setAddress()
-    addWaypoint: function() {
-      var waypoint = this.userAddress;
-      console.log(waypoint);
-      var start = this.carpool.start;
-
-      var map = new google.maps.Map(document.getElementById("carpoolmap"), {
-        zoom: 14,
-        center: { lat: 41.894089, lng: -87.802989 }
-      });
-      var directionsService = new google.maps.DirectionsService();
-      var directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(map);
-
-      calculateAndDisplayRoute(directionsService, directionsDisplay);
-      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        var waypts = [];
-        waypts.push({
-          location: waypoint,
-          stopover: true
-        });
-
+        if (waypoints) {
+          waypoints.forEach(waypoint =>
+            waypts.push({
+              location: waypoint,
+              stopover: true
+            })
+          );
+        }
+        console.log("inner waypts:", waypts);
         directionsService.route(
           {
             origin: start,
@@ -376,17 +331,64 @@ var Carpool = {
         );
       }
     },
+    // ^ end of setAddress()
+    addWaypoint: function() {
+      var waypoint = this.userAddress;
+      var start = this.carpool.start;
+
+      var map = new google.maps.Map(document.getElementById("carpoolmap"), {
+        zoom: 14,
+        center: { lat: 41.894089, lng: -87.802989 }
+      });
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+        waypts.push({
+          location: waypoint,
+          stopover: true
+        });
+
+        directionsService.route(
+          {
+            origin: start,
+            destination: "1101 Chicago Ave 60302",
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: "DRIVING"
+          },
+          function(response, status) {
+            if (status === "OK") {
+              directionsDisplay.setDirections(response);
+              var route = response.routes[0];
+            } else {
+              window.alert("Directions request failed due to " + status);
+            }
+          }
+        );
+      }
+    },
     // ^ end of addWaypoint()
     joinCarpool: function() {
       this.addWaypoint();
       var params = {
-        waypoint: this.waypoint,
+        waypoint: this.userAddress,
         booking_id: this.$route.params.id
       };
+      console.log("params:", params);
       axios.patch("/v1/carpools/" + this.carpool.id, params).then(
         function(response) {
-          this.updateResponse = response.data.carpool;
-          console.log(this.updateResponse);
+          var updatedCarpool = this.carpools.filter(
+            carpool => carpool.id === this.carpool.id
+          );
+          updatedCarpool = response.data;
+          console.log("updatedCarpool:", updatedCarpool);
+          console.log("this.carpools:", this.carpools);
+          this.updateResponse = response.data;
+          this.carpool = response.data;
         }.bind(this)
       );
     },
@@ -398,9 +400,17 @@ var Carpool = {
         spots: this.spots,
         booking_id: this.booking.id
       };
-      axios.post("/v1/carpools", params).then(function(response) {
-        this.createResponse = response.data;
-      });
+      axios.post("/v1/carpools", params).then(
+        function(response) {
+          this.createResponse = response.data;
+          this.carpool = response.data;
+          this.carpools.push(this.carpool);
+          this.carpoolName = "";
+          this.start = this.userAddress;
+          this.userAddress = "";
+          this.spots = 3;
+        }.bind(this)
+      );
     },
     changeStart: function() {}
   },
