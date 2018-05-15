@@ -113,7 +113,7 @@ var Booking = {
       students: null,
       student: { first_name: "Blank" },
       booking: {},
-      errors: null,
+      errors: [],
       error: "",
       weekOffset: 0,
       gcalDate: null
@@ -156,7 +156,7 @@ var Booking = {
           function(response) {
             this.booking = response.data;
             if (response.data.error) {
-              this.error = response.data.error;
+              this.errors.push(response.data.error);
               console.log(this.error);
             }
             console.log(this.booking);
@@ -164,7 +164,7 @@ var Booking = {
         )
         .catch(
           function(error) {
-            this.errors = error.response.data.errors;
+            this.errors.push(error.response.data.errors);
             console.log(this.errors);
           }.bind(this)
         );

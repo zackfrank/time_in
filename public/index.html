@@ -423,15 +423,6 @@
         <!-- Booking Area -->
         <div class="tab-content">
           <div class="tab-pane show active">
-            
-            <!-- Errors -->
-            <div class="row error" v-if="error || errors" style="margin: auto; color: red">
-              ERROR: {{error}}
-              <ul v-if="errors">
-                <li v-for="eachError in errors">{{eachError}}</li>
-              </ul>
-            </div>
-            <!-- END OF ERRORS -->
 
             <div class="row" v-if="day === 'Friday'">
               <span style="margin: auto; padding-top: 30px;">No Classes On This Day</span>
@@ -541,12 +532,19 @@
       <div class="modal-dialog event-details" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Booking Confirmed!</h5>
+            <h5 class="modal-title" v-if="!errors[0]"><span v-if="spaceLeft === 0">Standby </span>Booking Confirmed!</h5>
+            <h5 class="modal-title" style="color: red" v-if="errors[0]">Error</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" v-if="errors[0]">
+            <p>There Was An Error With Your Booking:</p>
+            <ul>
+              <li v-for="error in errors" style="color: red">{{error}}</li>
+            </ul>
+          </div>
+          <div class="modal-body" v-if="!errors[0]">
             <p class="description">Add session to your Google calendar or create/join a Carpool!</p>
             <div class="row">
               <div class="col-sm-5 order-sm-2">
