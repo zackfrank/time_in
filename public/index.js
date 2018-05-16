@@ -68,6 +68,24 @@ var Schedule = {
     setTab: function(tab) {
       this.tab = tab;
     },
+    pastStatusColor: function(status) {
+      if (status !== "Booked") {
+        var color = "red";
+      } else {
+        color = "black";
+      }
+      return color;
+    },
+    upcomingStatusColor: function(status) {
+      if (status === "Booked") {
+        var color = "black";
+      } else if (status === "Cancelled") {
+        color = "red";
+      } else {
+        color = "rgba(0, 0, 0, 0.5)";
+      }
+      return color;
+    },
     takeSession: function(id) {
       var params = {
         status: "Booked"

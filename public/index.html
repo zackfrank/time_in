@@ -761,7 +761,7 @@
                       <td>{{booking.time}}</td>
                       <td>{{booking.student}}</td>
                       <td>{{booking.booked_by}}</td>
-                      <td>{{booking.status}}</td>
+                      <td v-bind:style="{color: pastStatusColor(booking.status)}">{{booking.status}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -784,7 +784,7 @@
                       <td>{{booking.time}}</td>
                       <td>{{booking.student}}</td>
                       <td>{{booking.booked_by}}</td>
-                      <td>
+                      <td v-bind:style="{color: upcomingStatusColor(booking.status)}">
                         {{booking.status}}
                         <a href="/#/schedule" style="color: red; font-size: 1.3em; text-decoration: none; margin-left: 8px" v-on:click="cancelSession(booking.id)" v-if="booking.status === 'Booked' || booking.status === 'Standby'">&times;</a>
                       </td>
