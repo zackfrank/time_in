@@ -1,6 +1,7 @@
 class Carpool < ApplicationRecord
   has_many :bookings
   belongs_to :attendance_record
+  belongs_to :user
   serialize :waypoints, Array
 
   def mapped_bookings
@@ -57,8 +58,10 @@ class Carpool < ApplicationRecord
     {
       id: id,
       name: name,
+      user: user.as_json,
       start: start,
       waypoints: waypoints,
+      request: request,
       date: attendance_record.date.strftime("%a, %b %e, %Y"),
       time: attendance_record.time,
       spots: spots,

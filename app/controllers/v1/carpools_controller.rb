@@ -45,7 +45,9 @@ class V1::CarpoolsController < ApplicationController
       name: params[:name],
       attendance_record_id: params[:ar_id],
       start: params[:start],
-      spots: params[:spots]
+      spots: params[:spots],
+      user_id: current_user.id,
+      request: params[:request]
       )
     carpool.save
 

@@ -220,6 +220,7 @@ var Carpool = {
       carpoolName: "",
       spots: 3,
       userAddress: "",
+      request: "",
       start: "Mathnasium Westood",
       updateResponse: "",
       createResponse: "",
@@ -242,9 +243,9 @@ var Carpool = {
               var carpool = this.carpools.filter(
                 carpool => carpool.id === this.booking.carpool.id
               );
+              this.carpool = carpool[0];
+              this.initialCarpool = this.carpool;
             }
-            this.carpool = carpool[0];
-            this.initialCarpool = this.carpool;
             console.log("carpool if booking has c_id:", this.carpool);
           }.bind(this)
         );
@@ -289,7 +290,6 @@ var Carpool = {
   methods: {
     showCarpool: function() {
       console.log(this.carpool);
-      console.log(this.$route.path);
     },
     setStart: function() {
       var start = this.carpool.start;
@@ -349,6 +349,7 @@ var Carpool = {
     // ^ end of setAddress()
     addWaypoint: function() {
       var waypoint = this.userAddress;
+      var waypoints = this.carpool.waypoints;
       var start = this.carpool.start;
 
       var map = new google.maps.Map(document.getElementById("carpoolmap"), {
@@ -362,6 +363,15 @@ var Carpool = {
       calculateAndDisplayRoute(directionsService, directionsDisplay);
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var waypts = [];
+        if (waypoints) {
+          waypoints.forEach(waypoint =>
+            waypts.push({
+              location: waypoint,
+              stopover: true
+            })
+          );
+        }
+
         waypts.push({
           location: waypoint,
           stopover: true
@@ -414,7 +424,8 @@ var Carpool = {
         ar_id: this.booking.attendance_record_id,
         start: this.userAddress,
         spots: this.spots,
-        booking_id: this.booking.id
+        booking_id: this.booking.id,
+        request: this.request
       };
       axios.post("/v1/carpools", params).then(
         function(response) {

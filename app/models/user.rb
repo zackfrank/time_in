@@ -6,6 +6,7 @@ class User < ApplicationRecord
   # validates :account_id, presence: true
   
   belongs_to :account
+  has_many :carpools
   has_many :bookings
   has_many :attendance_records, through: :bookings
 

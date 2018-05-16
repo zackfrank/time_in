@@ -596,7 +596,7 @@
         </button>
         
         <!-- For Trouble-shooting: -->
-        <button v-on:click="showCarpool()">Console.log Carpool</button>
+        <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
         
         <!-- Carpool Details -->
         <div v-if="selectedCarpool">
@@ -608,7 +608,7 @@
             <li>Date/Time: {{selectedCarpool.date}} at {{selectedCarpool.time}}</li>
             <li>Start Address: {{selectedCarpool.start}}</li>
             <li>Spots in carpool: {{selectedCarpool.spots}}</li>
-            <li>Driver: {{selectedCarpool.bookings[0].booked_by.first_name}} {{selectedCarpool.bookings[0].booked_by.last_name}}</li>
+            <li>Driver: {{selectedCarpool.user.first_name}} {{selectedCarpool.user.last_name}}</li>
           </ul>
           Students:
           <ul>
@@ -645,8 +645,18 @@
                       <input id="spots" type="number" v-model="spots" class="col-md-7" placeholder="3" min="1" max="10">
                     </div>
                     <div class="form-group">
-                      <h6>Starting Address:</h6>
+                      <h6>Your Address:</h6>
                       <input id="start" type="text" v-model="userAddress" class="col-md-7">
+                    </div>
+                    <div class="form-group">
+                      <h6>I am looking for...</h6>
+                      <select id="request" v-model="request">
+                        <option disabled value="">Choose one...</option>
+                        <option value="Passengers">Just passengers</option>
+                        <option value="Driver">A round-trip driver</option>
+                        <option value="Driver to">Driver to Mathnasium (pick up from home)</option>
+                        <option value="Driver from">Driver from Mathnasium (drop off at home)</option>
+                      </select>
                     </div>
                     <p>The date and time will automatically be associated with your carpool.</p>
                       <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="createCarpool()">Create Carpool!</button>
