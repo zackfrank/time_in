@@ -102,6 +102,20 @@ class Booking < ApplicationRecord
     end
   end
 
+  def passed
+    ar = AttendanceRecord.find_by(id: self.attendance_record_id)
+    # To add time to the date
+    session = ar.date.to_time.to_s.split
+    time = Time.parse(ar.time).to_s.split(' ')[1]
+    session[1] = time
+    # Turn date/time into seconds since epoch
+    session = session.join(" ").to_time.to_i
+    # Get time now and convert to seconds since epoch
+    now = Time.now.to_i
+    # Return Boolean
+    session < now
+  end
+
   def as_json
     student = Student.find_by(id: self.student_id)
     user = User.find_by(id: self.user_id)
@@ -113,6 +127,7 @@ class Booking < ApplicationRecord
       user_address: user.address + " " + user.zip,
       attendance_record_id: ar.id,
       date: ar.date.strftime("%a, %b %e %Y"),
+      passed: passed,
       time: ar.time,
       status: status,
       carpool: carpool ? {id: carpool.id, name: carpool.name} : nil

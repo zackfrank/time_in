@@ -16,12 +16,16 @@ class AttendanceRecord < ApplicationRecord
   end
 
   def gcal_date
-    time_string = Time.parse(time).to_s.split(' ')[1].gsub(/[^0-9A-Za-z]/, '') # convert time string to format: "030000"
-    time_string_24hr = time_string.to_i < 120000 ? (time_string.to_i + 120000).to_s : time_string # ensure time in 24hr format: "150000"
+    # convert time string to format: "030000"
+    time_string = Time.parse(time).to_s.split(' ')[1].gsub(/[^0-9A-Za-z]/, '') 
+    # ensure time in 24hr format: "150000"
+    time_string_24hr = time_string.to_i < 120000 ? (time_string.to_i + 120000).to_s : time_string
     time_argument = "%Y%m%dT#{time_string_24hr}"
     part1 = date.strftime(time_argument)
+    
     # Plus one hour
-    time_string2_24hr = time_string.to_i < 120000 ? (time_string.to_i + 130000).to_s : (time_string.to_i + 10000).to_s # ensure time in 24hr format
+    # ensure time in 24hr format
+    time_string2_24hr = time_string.to_i < 120000 ? (time_string.to_i + 130000).to_s : (time_string.to_i + 10000).to_s
     time_argument = "%Y%m%dT#{time_string2_24hr}"
     part2 = date.strftime(time_argument)
     "#{part1}/#{part2}"

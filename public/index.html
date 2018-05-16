@@ -756,7 +756,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="booking in bookings" v-if="booking.date < Date()">
+                    <tr v-for="booking in bookings" v-if="booking.passed">
                       <th scope="row">{{booking.date}}</th>
                       <td>{{booking.time}}</td>
                       <td>{{booking.student}}</td>
@@ -779,7 +779,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="booking in bookings" v-if="booking.date > Date()">
+                    <tr v-for="booking in bookings" v-if="!booking.passed">
                       <th scope="row">{{booking.date}}</th>
                       <td>{{booking.time}}</td>
                       <td>{{booking.student}}</td>

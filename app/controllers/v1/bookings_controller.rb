@@ -5,6 +5,8 @@ class V1::BookingsController < ApplicationController
     # Get all bookings from all students of current user's account - regardless of who booked (ie admin)
     bookings = current_user.account.students.map { |student| student.bookings }
     bookings = bookings.flatten
+    # Order by date AND time
+    bookings = bookings.sort_by {|booking| [booking.attendance_record.date, booking.attendance_record.time]}
 
     render json: bookings.as_json
   end
