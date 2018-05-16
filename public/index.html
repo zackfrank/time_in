@@ -65,14 +65,6 @@
         </div>
       </div>
     </nav>
-  
-    <section class="home bg-darken">
-      <div class="jumbotron">
-        <h1 data-aos="zoom-in-up" data-aos-delay="100">Book Your Sessions</h1>
-        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200">Start Booking!</a>
-        <p data-aos="zoom-in-up" data-aos-delay="300">Book your next session today!</p>
-      </div>
-    </section>
 
     <router-view></router-view>
 
@@ -86,8 +78,19 @@
 
 <template id="home-page">
   <div class="vue-component">
+  
+    <section class="home bg-darken">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Book Your Sessions</h1>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200">Start Booking!</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">Book your next session today!</p>
+      </div>
+    </section>
+    
     <section data-scroll-index="1" class="classes content-block">
       <div class="container">
+
+
         <h2 data-aos="zoom-in-up">Math Booking: Book Sessions With Ease!</h2>
 
         <div class="row no-gutters dance-styles">
@@ -161,8 +164,17 @@
 
 <template id="profile">
   <div class="vue-component">
-    <section data-scroll-index="3" class="schedule content-block">
-      <div class="container">
+
+    <section class="home bg-darken" style="background-image:url(img/family.jpg)">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Welcome to your Profile!</h1>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200" data-scroll-nav="0">Go To Your Info</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">Manage your personal info, your students, and users under your account</p>
+      </div>
+    </section>    
+
+    <section class="schedule content-block">
+      <div class="container" data-scroll-index="0">
         <h2 data-aos="zoom-in-up">User Profile</h2>
         <div class="timetable">
 
@@ -332,6 +344,7 @@
                       <div class="main-content">
                         <p>Birthday: {{student.birthday}}</p>
                         <p v-if="student.high_school">High School Program</p>
+                        <p v-if="!student.high_school">Regular Program</p>
                       </div>
                       <div class="row event-actions">
                         <div class="col-lg-6">
@@ -411,73 +424,84 @@
 </template>
 
 <template id="booking">
-  <div class="vue-component container">
+  <div class="vue-component">
+
+    <section class="home bg-darken" style="background-image:url(img/teaching.jpg)">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Book Your Sessions Here!</h1>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200" data-scroll-nav="0">Start Booking!</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">What are you waiting for? Go ahead and book away!</p>
+      </div>
+    </section>
+
 
     <section data-scroll-index="1" class="schedule content-block">
-      <h2 data-aos="zoom-in-up">Booking</h2>
-      
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('previous')">Previous</a></li>
-          <li class="page-item"><a class="page-link">Week of: {{sunday.date}}</a></li>
-          <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('next')">Next</a></li>
-        </ul>
-      </nav>
-
-      <div class="timetable">
-
-        <!-- Schedule Top Navigation -->
-        <nav class="nav nav-tabs">
-          <a class="nav-link" v-bind:class="{active: day === 'Sunday'}" v-on:click="setDay('Sunday')">Sun</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Monday'}" v-on:click="setDay('Monday')">Mon</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Tuesday'}" v-on:click="setDay('Tuesday')">Tue</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Wednesday'}" v-on:click="setDay('Wednesday')">Wed</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Thursday'}" v-on:click="setDay('Thursday')">Thu</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Friday'}" v-on:click="setDay('Friday')">Fri</a>
-          <a class="nav-link" v-bind:class="{active: day === 'Saturday'}" v-on:click="setDay('Saturday')">Sat</a>
-        </nav>
+      <div data-scroll-index="0">
+        <h2 data-aos="zoom-in-up">Booking</h2>
         
-        <!-- Booking Area -->
-        <div class="tab-content">
-          <div class="tab-pane show active">
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('previous')">Previous</a></li>
+            <li class="page-item"><a class="page-link">Week of: {{sunday.date}}</a></li>
+            <li class="page-item"><a class="page-link" href="/#/book" v-on:click="setWeekOffset('next')">Next</a></li>
+          </ul>
+        </nav>
 
-            <div class="row" v-if="day === 'Friday'">
-              <span style="margin: auto; padding-top: 30px;">No Classes On This Day</span>
-            </div>
-            <div class="row" is="transition-group" name="slide-left">
-              
-              
-              <!-- Session Loop Segment -->
-              
-              <div class="col-md-6" v-for="ar in weeklyAttendanceRecords" v-if="day === ar.weekday" v-bind:key="ar.id">
-                <div class="timetable-item">
-                  <div class="timetable-item-img">
-                    <img src="img/session.jpg" alt="Session image A plus" v-if="!ar.high_school">
-                    <img src="img/hs.png" alt="High School Session Image A plus" v-if="ar.high_school">
-                  </div>
-                  <div class="timetable-item-main">
-                    <div class="timetable-item-time">{{ar.time}}</div>
-                    <div class="timetable-item-name">
-                      <span v-if="!ar.high_school">Regular Session</span>
-                      <span v-if="ar.high_school">High School Session</span>
+        <div class="timetable">
+
+          <!-- Schedule Top Navigation -->
+          <nav class="nav nav-tabs">
+            <a class="nav-link" v-bind:class="{active: day === 'Sunday'}" v-on:click="setDay('Sunday')">Sun</a>
+            <a class="nav-link" v-bind:class="{active: day === 'Monday'}" v-on:click="setDay('Monday')">Mon</a>
+            <a class="nav-link" v-bind:class="{active: day === 'Tuesday'}" v-on:click="setDay('Tuesday')">Tue</a>
+            <a class="nav-link" v-bind:class="{active: day === 'Wednesday'}" v-on:click="setDay('Wednesday')">Wed</a>
+            <a class="nav-link" v-bind:class="{active: day === 'Thursday'}" v-on:click="setDay('Thursday')">Thu</a>
+            <a class="nav-link" v-bind:class="{active: day === 'Friday'}" v-on:click="setDay('Friday')">Fri</a>
+            <a class="nav-link" v-bind:class="{active: day === 'Saturday'}" v-on:click="setDay('Saturday')">Sat</a>
+          </nav>
+          
+          <!-- Booking Area -->
+          <div class="tab-content">
+            <div class="tab-pane show active">
+
+              <div class="row" v-if="day === 'Friday'">
+                <span style="margin: auto; padding-top: 30px;">No Classes On This Day</span>
+              </div>
+              <div class="row" is="transition-group" name="slide-left">
+                
+                
+                <!-- Session Loop Segment -->
+                
+                <div class="col-md-6" v-for="ar in weeklyAttendanceRecords" v-if="day === ar.weekday" v-bind:key="ar.id">
+                  <div class="timetable-item">
+                    <div class="timetable-item-img">
+                      <img src="img/elementary.png" alt="Session image A plus" v-if="!ar.high_school">
+                      <img src="img/calculus2.jpg" alt="High School Session Image A plus" v-if="ar.high_school">
                     </div>
-                    <button class="btn btn-primary btn-book" 
-                      data-toggle="modal"
-                      data-target="#eventDetails"
-                      data-title="Book Your Session"
-                      v-on:click="setDetails(ar.time, ar.date, ar.gcal_date, ar.id, ar.space_left)">
-                      Book
-                      <span v-if="ar.space_left === 0">on Standby</span>
-                    </button>
-                    <div class="timetable-item-like">
-                      <div class="timetable-item-like-count">{{ar.date}}</div>
-                      <div class="timetable-item-like-count">Space Left: {{ar.space_left}}/{{ar.capacity}}</div>
+                    <div class="timetable-item-main">
+                      <div class="timetable-item-time">{{ar.time}}</div>
+                      <div class="timetable-item-name">
+                        <span v-if="!ar.high_school">Regular Session</span>
+                        <span v-if="ar.high_school">High School Session</span>
+                      </div>
+                      <button class="btn btn-primary btn-book" 
+                        data-toggle="modal"
+                        data-target="#eventDetails"
+                        data-title="Book Your Session"
+                        v-on:click="setDetails(ar.time, ar.date, ar.gcal_date, ar.id, ar.space_left)">
+                        Book
+                        <span v-if="ar.space_left === 0">on Standby</span>
+                      </button>
+                      <div class="timetable-item-like">
+                        <div class="timetable-item-like-count">{{ar.date}}</div>
+                        <div class="timetable-item-like-count">Space Left: {{ar.space_left}}/{{ar.capacity}}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!-- Session Loop Segment End -->
+                <!-- Session Loop Segment End -->
 
+              </div>
             </div>
           </div>
         </div>
@@ -587,113 +611,132 @@
 </template>
 
 <template id="carpool">
-  <div class="vue-component container">
+  <div class="vue-component">
+
+    <section class="home bg-darken" style="background-image:url(img/carpool.jpg)">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Welcome to the Carpool page!</h1>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200" data-scroll-nav="0">Get Started!</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">Create or join a carpool!</p>
+      </div>
+    </section>
 
     <section data-scroll-index="1" class="schedule content-block">
-      <h2 data-aos="zoom-in-up">Carpool</h2>
-      
-      <!-- MAP -->
-      <div id="carpoolmap"></div>
-      
-      <!-- Select Available Carpools -->
-      <div id="right-panel">
-        <h3>Carpools Available:</h3>
-        <select id="waypoints" v-model="carpool">
-          <option v-bind:value="initialCarpool" disabled>Select a Carpool...</option>
-          <option v-bind:value="carpool" v-for="carpool in carpools">Carpool Name: {{carpool.name}}</option>
-        </select>
-      
-        <button class="btn btn-light btn-join" v-on:click="addWaypoint()" style="margin-top: 10px">Try This Carpool</button>
-        <button class="btn btn-light btn-join" v-on:click="joinCarpool()">Join This Carpool</button>
-        <button 
-          class="btn btn-light btn-join" 
-          data-toggle="modal"
-          data-target="#createCarpool"
-          data-title="CreateCarpool">Create New Carpool
-        </button>
+      <div data-scroll-index="0">
+        <h2 data-aos="zoom-in-up">Carpool</h2>
         
-        <!-- For Trouble-shooting: -->
-        <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
+        <!-- MAP -->
+        <div id="carpoolmap"></div>
         
-        <!-- Carpool Details -->
-        <div v-if="selectedCarpool">
-          <p v-if="updateResponse">Carpool Updated!</p>
-          <p v-if="createResponse">Carpool Created!</p>
-          Carpool Details: 
-          <ul>
-            <li>Carpool Name: {{selectedCarpool.name}}</li>
-            <li>Date/Time: {{selectedCarpool.date}} at {{selectedCarpool.time}}</li>
-            <li>Start Address: {{selectedCarpool.start}}</li>
-            <li>Spots in carpool: {{selectedCarpool.spots}}</li>
-            <li>Driver: {{selectedCarpool.user.first_name}} {{selectedCarpool.user.last_name}}</li>
-          </ul>
-          Students:
-          <ul>
-            <li v-for="booking in selectedCarpool.bookings">{{booking.student}}</li>
-          </ul>
-        </div>
-        <!-- End of Carpool Details -->
+        <!-- Select Available Carpools -->
+        <div id="right-panel">
+          <h3>Carpools Available:</h3>
+          <select id="waypoints" v-model="carpool">
+            <option v-bind:value="initialCarpool" disabled>Select a Carpool...</option>
+            <option v-bind:value="carpool" v-for="carpool in carpools">Carpool Name: {{carpool.name}}</option>
+          </select>
+        
+          <button class="btn btn-light btn-join" v-on:click="addWaypoint()" style="margin-top: 10px">Try This Carpool</button>
+          <button class="btn btn-light btn-join" v-on:click="joinCarpool()">Join This Carpool</button>
+          <button 
+            class="btn btn-light btn-join" 
+            data-toggle="modal"
+            data-target="#createCarpool"
+            data-title="CreateCarpool">Create New Carpool
+          </button>
+          
+          <!-- For Trouble-shooting: -->
+          <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
+          
+          <!-- Carpool Details -->
+          <div v-if="selectedCarpool">
+            <p v-if="updateResponse">Carpool Updated!</p>
+            <p v-if="createResponse">Carpool Created!</p>
+            Carpool Details: 
+            <ul>
+              <li>Carpool Name: {{selectedCarpool.name}}</li>
+              <li>Date/Time: {{selectedCarpool.date}} at {{selectedCarpool.time}}</li>
+              <li>Start Address: {{selectedCarpool.start}}</li>
+              <li>Spots in carpool: {{selectedCarpool.spots}}</li>
+              <li>Driver: {{selectedCarpool.user.first_name}} {{selectedCarpool.user.last_name}}</li>
+            </ul>
+            Students:
+            <ul>
+              <li v-for="booking in selectedCarpool.bookings">{{booking.student}}</li>
+            </ul>
+          </div>
+          <!-- End of Carpool Details -->
 
-        <!-- <div v-if="">No one has created a carpool for this time yet. Feel free to create one!</div> -->
+          <!-- <div v-if="">No one has created a carpool for this time yet. Feel free to create one!</div> -->
 
-        <!-- Signup Modal -->
-        <div id="createCarpool" class="modal fade" role="dialog" aria-hidden="true">
-          <div class="modal-dialog event-details" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Create a New Carpool</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="description">Enter Details for Your Carpool:</p>
+          <!-- Signup Modal -->
+          <div id="createCarpool" class="modal fade" role="dialog" aria-hidden="true">
+            <div class="modal-dialog event-details" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Create a New Carpool</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="description">Enter Details for Your Carpool:</p>
 
-                <div class="row">
-                  <div class="col-sm-5 order-sm-2">
-                    <img class="modal-img" src="img/a-plus-outside.jpg" alt="A-Plus mascot outside">
-                  </div>
-                  <div class="col-sm-7 order-sm-1">
-                    <div class="form-group">
-                      <input type="text" v-model="carpoolName" class="col-md-7" placeholder="Name your Carpool">
+                  <div class="row">
+                    <div class="col-sm-5 order-sm-2">
+                      <img class="modal-img" src="img/a-plus-outside.jpg" alt="A-Plus mascot outside">
                     </div>
-                    <div class="form-group">
-                      <h6>Spots available in Carpool:</h6>
-                      <input id="spots" type="number" v-model="spots" class="col-md-7" placeholder="3" min="1" max="10">
+                    <div class="col-sm-7 order-sm-1">
+                      <div class="form-group">
+                        <input type="text" v-model="carpoolName" class="col-md-7" placeholder="Name your Carpool">
+                      </div>
+                      <div class="form-group">
+                        <h6>Spots available in Carpool:</h6>
+                        <input id="spots" type="number" v-model="spots" class="col-md-7" placeholder="3" min="1" max="10">
+                      </div>
+                      <div class="form-group">
+                        <h6>Your Address:</h6>
+                        <input id="start" type="text" v-model="userAddress" class="col-md-7">
+                      </div>
+                      <div class="form-group">
+                        <h6>I am looking for...</h6>
+                        <select id="request" v-model="request">
+                          <option disabled value="">Choose one...</option>
+                          <option value="Passengers">Just passengers</option>
+                          <option value="Driver">A round-trip driver</option>
+                          <option value="Driver to">Driver to Mathnasium (pick up from home)</option>
+                          <option value="Driver from">Driver from Mathnasium (drop off at home)</option>
+                        </select>
+                      </div>
+                      <p>The date and time will automatically be associated with your carpool.</p>
+                        <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="createCarpool()">Create Carpool!</button>
                     </div>
-                    <div class="form-group">
-                      <h6>Your Address:</h6>
-                      <input id="start" type="text" v-model="userAddress" class="col-md-7">
-                    </div>
-                    <div class="form-group">
-                      <h6>I am looking for...</h6>
-                      <select id="request" v-model="request">
-                        <option disabled value="">Choose one...</option>
-                        <option value="Passengers">Just passengers</option>
-                        <option value="Driver">A round-trip driver</option>
-                        <option value="Driver to">Driver to Mathnasium (pick up from home)</option>
-                        <option value="Driver from">Driver from Mathnasium (drop off at home)</option>
-                      </select>
-                    </div>
-                    <p>The date and time will automatically be associated with your carpool.</p>
-                      <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="createCarpool()">Create Carpool!</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
+      </section>
 
-      </div>
-    </section>
-
+    </div>
   </div>
 </template>
 
 <template id="schedule">
   <div class="vue-component">
+
+    <section class="home bg-darken" style="background-image:url(img/schedule.jpg)">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Welcome to your Schedule!</h1>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200" data-scroll-nav="0">View Schedule</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">View and manage past and upcoming sessions and create or join a carpool!</p>
+      </div>
+    </section>
+
     <section data-scroll-index="3" class="schedule content-block">
-      <div class="container">
+      <div class="container" data-scroll-index="0">
         <h2 data-aos="zoom-in-up">Schedule</h2>
         <div class="timetable">
           
@@ -756,12 +799,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="booking in bookings" v-if="booking.passed">
+                    <tr v-for="booking in bookings" v-if="booking.passed" v-bind:style="{color: pastStatusColor(booking.status)}">
                       <th scope="row">{{booking.date}}</th>
                       <td>{{booking.time}}</td>
                       <td>{{booking.student}}</td>
                       <td>{{booking.booked_by}}</td>
-                      <td v-bind:style="{color: pastStatusColor(booking.status)}">{{booking.status}}</td>
+                      <td>{{booking.status}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -779,12 +822,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="booking in bookings" v-if="!booking.passed">
+                    <tr v-for="booking in bookings" v-if="!booking.passed" v-bind:style="{color: upcomingStatusColor(booking.status)}">
                       <th scope="row">{{booking.date}}</th>
                       <td>{{booking.time}}</td>
                       <td>{{booking.student}}</td>
                       <td>{{booking.booked_by}}</td>
-                      <td v-bind:style="{color: upcomingStatusColor(booking.status)}">
+                      <td>
                         {{booking.status}}
                         <a href="/#/schedule" style="color: red; font-size: 1.3em; text-decoration: none; margin-left: 8px" v-on:click="cancelSession(booking.id)" v-if="booking.status === 'Booked' || booking.status === 'Standby'">&times;</a>
                       </td>
@@ -808,8 +851,18 @@
 
 <template id="auth-page">
   <div class="vue-component">
-    <section data-scroll-index="3" class="prices content-block">
-      <div class="container">
+
+    <section class="home bg-darken" style="background-image:url(img/open.jpg)">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Welcome to Math Booking!</h1>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200" data-scroll-nav="0">Get Started!</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">Sign up or sign in and start booking!</p>
+      </div>
+    </section>
+
+    <section class="prices content-block">
+      <div class="container" data-scroll-index="0">
+
         <h2 data-aos="zoom-in-up">Signup / Login</h2>
 
         <div class="row">
@@ -854,12 +907,6 @@
                   <div style="margin-bottom: 20px">
                     <p>Welcome to "Math Booking" </br> Please enter your email to get started:</p>
                   </div>
-
-                  <!-- Maybe only add users to account from profile page? -->
-                  <!-- <div class="form-group">
-                    <label class="col-md-4">Account:</label> 
-                    <input type="text" v-model="account" class="col-md-7">
-                  </div> -->
 
                   <div class="form-group">
                     <label class="col-md-3">Email:</label>
@@ -950,8 +997,18 @@
 
 <template id="admin">
   <div class="vue-component">
+
+    <section class="home bg-darken" style="background-image:url(img/admin.jpg)">
+      <div class="jumbotron">
+        <h1 data-aos="zoom-in-up" data-aos-delay="100">Welcome to the Admin Page</h1>
+        <a href="/#/admin" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200" data-scroll-nav="0">Start Administrating</a>
+        <p data-aos="zoom-in-up" data-aos-delay="300">Manage student schedules, the calendar of available sessions, and user accounts.</p>
+        <p data-aos="zoom-in-up" data-aos-delay="300">How would this place ever run without you?</p>
+      </div>
+    </section>
+
     <section class="schedule content-block">
-      <div class="container">
+      <div class="container" data-scroll-index="0">
         <h2 data-aos="zoom-in-up">Admin Page</h2>
         <div class="timetable">
 
