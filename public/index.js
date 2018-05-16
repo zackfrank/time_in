@@ -221,7 +221,7 @@ var Carpool = {
       spots: 3,
       userAddress: "",
       request: "",
-      start: "Mathnasium Westood",
+      start: "Downtown Oak Park",
       updateResponse: "",
       createResponse: "",
       selectedCarpool: ""
@@ -245,6 +245,7 @@ var Carpool = {
               );
               this.carpool = carpool[0];
               this.initialCarpool = this.carpool;
+              this.selectedCarpool = this.carpool;
             }
             console.log("carpool if booking has c_id:", this.carpool);
           }.bind(this)
@@ -253,8 +254,6 @@ var Carpool = {
     );
   },
   mounted: function() {
-    var start = this.start;
-
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var map = new google.maps.Map(document.getElementById("carpoolmap"), {
@@ -268,23 +267,14 @@ var Carpool = {
     function calculateAndDisplayRoute(directionsService, directionsDisplay) {
       var waypts = [];
 
-      directionsService.route(
-        {
-          origin: start,
-          destination: "1101 Chicago Ave 60302",
-          waypoints: waypts,
-          optimizeWaypoints: true,
-          travelMode: "DRIVING"
-        },
-        function(response, status) {
-          if (status === "OK") {
-            directionsDisplay.setDirections(response);
-            var route = response.routes[0];
-          } else {
-            window.alert("Directions request failed due to " + status);
-          }
+      directionsService.route({}, function(response, status) {
+        if (status === "OK") {
+          directionsDisplay.setDirections(response);
+          var route = response.routes[0];
+        } else {
+          window.alert("Directions request failed due to " + status);
         }
-      );
+      });
     }
   },
   methods: {
@@ -460,7 +450,7 @@ var AdminPage = {
       account: "Select Account...",
       students: [],
       student: [],
-      error: "",
+      errors: "",
       tab: "view",
       weekOffset: 0,
       arID: null
@@ -533,7 +523,7 @@ var AdminPage = {
         function(response) {
           this.bookResponse = response.data;
           if (response.data.error) {
-            this.error = response.data.error;
+            this.errors.push(response.data.error);
           }
           this.student = [];
           axios.get("/v1/attendance_records").then(

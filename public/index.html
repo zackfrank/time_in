@@ -51,12 +51,12 @@
         <div class="collapse navbar-collapse" id="idanceNav">
           <i class="fa fa-times close-navbar-mobile" aria-hidden="true" data-toggle="collapse" data-target="#idanceNav"></i>
           <ul class="navbar-nav ml-auto">
-            <li><a href="/#/" class="nav-link" v-on:click="setPage('home')" v-bind:class="{ active: ($route.path === '/') }">Home</a></li>
-            <li><a href="/#/profile" class="nav-link" v-on:click="setPage('profile')" v-bind:class="{ active: ($route.path === '/profile') }">Profile</a></li>
-            <li><a href="/#/book" class="nav-link" v-on:click="setPage('book')" v-bind:class="{ active: ($route.path === '/book') }">Book</a></li>
-            <li><a href="/#/schedule" class="nav-link" v-on:click="setPage('schedule')" v-bind:class="{ active: ($route.path === '/schedule') }">My Schedule</a></li>
-            <li><a href="/#/auth" class="nav-link" v-if="!jwt" v-on:click="setPage('auth')" v-bind:class="{ active: ($route.path === '/auth') }">Signup/Login</a></li>
-            <li><a href="/#/admin" class="nav-link" v-on:click="setPage('admin')" v-bind:class="{ active: ($route.path === '/admin') }" v-if="admin">Admin</a></li>
+            <li><a href="/#/" class="nav-link" v-bind:class="{ active: ($route.path === '/') }">Home</a></li>
+            <li><a href="/#/profile" class="nav-link" v-bind:class="{ active: ($route.path === '/profile') }">Profile</a></li>
+            <li><a href="/#/book" class="nav-link" v-bind:class="{ active: ($route.path === '/book') }">Book</a></li>
+            <li><a href="/#/schedule" class="nav-link" v-bind:class="{ active: ($route.path === '/schedule') }">My Schedule</a></li>
+            <li><a href="/#/auth" class="nav-link" v-if="!jwt" v-bind:class="{ active: ($route.path === '/auth') }">Signup/Login</a></li>
+            <li><a href="/#/admin" class="nav-link" v-bind:class="{ active: ($route.path === '/admin') }" v-if="admin">Admin</a></li>
             <li v-if="jwt">
               <a href="/#/logout" class="nav-link" style="display: inline">Logout</a>
               <span style="color: #f03f33; display: inline">Welcome, {{name}}!</span>
@@ -69,7 +69,7 @@
     <section class="home bg-darken">
       <div class="jumbotron">
         <h1 data-aos="zoom-in-up" data-aos-delay="100">Book Your Sessions</h1>
-        <a href="#" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200">Start Booking!</a>
+        <a href="/#/book" class="btn btn-primary" data-aos="zoom-in-up" data-aos-delay="200">Start Booking!</a>
         <p data-aos="zoom-in-up" data-aos-delay="300">Book your next session today!</p>
       </div>
     </section>
@@ -313,6 +313,13 @@
 
               <!-- STUDENT PROFILES -->
               <div class="row" v-if="tab === 'students'"> 
+              
+                <div class="contact-item col-md-6" style="margin: auto; margin-bottom: 25px">
+                    <button class="btn btn-default btn-join">Add New Student</button>
+                </div>
+              </div>
+
+              <div class="row" v-if="tab === 'students'"> 
 
                 <div class="col-md-4" v-for="student in students">
                   <div class="event">
@@ -350,6 +357,14 @@
               <h2 data-aos="zoom-in-up" v-if="tab === 'account'">The {{account.name}} Account</h2>
 
               <div class="row" v-if="tab === 'account'"> 
+              
+                <div class="contact-item col-md-6" style="margin: auto; margin-bottom: 25px">
+                    <button class="btn btn-default btn-join">Add New User</button>
+                </div>
+              </div>
+
+              <div class="row" v-if="tab === 'account'"> 
+                
                 <div style="margin: auto; width: 40%" v-for="person in account.users" v-if="person.first_name !== user.first_name">
                   <div class="event">
                     <div class="event-picture">
@@ -379,8 +394,10 @@
                     </div>
                   </div>
                 </div>
-
+              
               </div>
+
+              
             <!-- COMPLETE END OF PROFILE CONTENT -->
             </div>
           </div>
@@ -970,10 +987,10 @@
               <div class="row" v-if="tab === 'view'"> 
 
                 <!-- Errors -->
-                <div class="row error" v-if="error || errors" style="margin: auto; color: red">
-                  ERROR: {{error}}
+                <div class="row error" v-if="errors" style="margin: auto; color: red">
+                  <span v-if="errors">ERROR:</span>
                   <ul v-if="errors">
-                    <li v-for="eachError in errors">{{eachError}}</li>
+                    <li v-for="error in errors">{{error}}</li>
                   </ul>
                 </div>
                 <!-- END OF ERRORS -->
