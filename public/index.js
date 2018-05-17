@@ -795,6 +795,7 @@ var LogoutPage = {
     localStorage.removeItem("jwt");
     localStorage.removeItem("account_id");
     localStorage.removeItem("id");
+    localStorage.removeItem("admin");
     router.push("/auth");
     location.reload();
   }
@@ -821,7 +822,7 @@ var app = new Vue({
   router: router,
   data: function() {
     return {
-      admin: localStorage.getItem("admin"),
+      adminString: localStorage.getItem("admin"),
       jwt: "",
       name: localStorage.getItem("name")
     };
@@ -832,5 +833,15 @@ var app = new Vue({
       axios.defaults.headers.common["Authorization"] = this.jwt;
     }
   },
-  methods: {}
+  methods: {
+    admin: function() {
+      if (!this.adminString) {
+        return false;
+      } else if (this.adminString === "false") {
+        return false;
+      } else if (this.adminString === "true") {
+        return true;
+      }
+    }
+  }
 });
