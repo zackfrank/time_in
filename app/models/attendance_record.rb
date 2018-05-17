@@ -5,7 +5,7 @@ class AttendanceRecord < ApplicationRecord
   has_many :users, through: :bookings
 
   def space_left
-    bookings = Booking.where(attendance_record_id: id).length
+    bookings = Booking.where(attendance_record_id: id, status: "Booked").length
     remaining_spots = capacity - bookings
     remaining_spots < 0 ? remaining_spots = 0 : remaining_spots
     return remaining_spots
