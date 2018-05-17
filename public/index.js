@@ -503,10 +503,13 @@ var Carpool = {
     },
     leaveCarpool: function() {
       var params = {
-        remove: "carpool"
+        remove_carpool: true,
+        address: this.userAddress,
+        booking_id: this.booking.id
       };
+      console.log(params["booking_id"]);
       axios
-        .patch("/v1/bookings/" + this.$route.params.id, params)
+        .patch("/v1/carpools/" + this.selectedCarpool.id, params)
         .then(function(response) {
           this.booking = response.data;
           location.reload();

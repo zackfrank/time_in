@@ -45,10 +45,6 @@ class V1::BookingsController < ApplicationController
     if params[:status]
       booking.status_update(params[:status])
     end
-    if params[:remove] == "carpool"
-      booking.carpool_id = nil
-      booking.save
-    end
 
     render json: booking.as_json
   end

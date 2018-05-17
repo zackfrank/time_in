@@ -32,13 +32,22 @@ class V1::CarpoolsController < ApplicationController
       carpool.send_text(current_user, params[:start], carpool.name)
     end
 
-    carpool.save   
-
     if params[:booking_id]
       booking = Booking.find(params[:booking_id])
       booking.carpool_id = params[:id]
       booking.save
     end
+
+    if params[:remove_carpool]
+      carpool = Carpool.find(params[:id])
+      carpool.waypoints.delete(params[:address])
+      
+      booking = Booking.find(params[:booking_id])
+      booking.carpool_id = nil
+      booking.save
+    end
+
+    carpool.save   
 
     render json: carpool.as_json
   end
