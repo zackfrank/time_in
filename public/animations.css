@@ -18,6 +18,7 @@
   height: 600px;
   float: left;
   width: 60%;
+  margin-left: 40px;
 }
 #right-panel {
   margin: 20px;

@@ -239,6 +239,8 @@ var Carpool = {
       spots: 3,
       userAddress: "",
       request: "",
+      details: "",
+      students: [],
       start: "Downtown Oak Park",
       updateResponse: "",
       createResponse: "",
@@ -299,6 +301,26 @@ var Carpool = {
     showCarpool: function() {
       console.log(this.carpool);
     },
+    fullName: function() {
+      return (
+        this.selectedCarpool.user.first_name +
+        " " +
+        this.selectedCarpool.user.last_name
+      );
+    },
+    spotsAvailable: function() {
+      return (
+        this.selectedCarpool.spots - this.selectedCarpool.bookings.length + 1
+      );
+    },
+    sessionDetails: function() {
+      return this.selectedCarpool.date + " at " + this.selectedCarpool.time;
+    },
+    addMathnasium: function() {
+      if (this.details === "Driver to" || this.details === "Driver From") {
+        return true;
+      }
+    },
     setStart: function() {
       var start = this.carpool.start;
       var waypoints = this.carpool.waypoints;
@@ -358,6 +380,8 @@ var Carpool = {
     addWaypoint: function() {
       var waypoint = this.userAddress;
       var waypoints = this.carpool.waypoints;
+      waypoints.push(waypoint);
+
       var start = this.carpool.start;
 
       var map = new google.maps.Map(document.getElementById("carpoolmap"), {
@@ -371,19 +395,13 @@ var Carpool = {
       calculateAndDisplayRoute(directionsService, directionsDisplay);
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var waypts = [];
-        if (waypoints) {
-          waypoints.forEach(waypoint =>
-            waypts.push({
-              location: waypoint,
-              stopover: true
-            })
-          );
-        }
 
-        waypts.push({
-          location: waypoint,
-          stopover: true
-        });
+        waypoints.forEach(waypoint =>
+          waypts.push({
+            location: waypoint,
+            stopover: true
+          })
+        );
 
         directionsService.route(
           {
@@ -453,6 +471,7 @@ var Carpool = {
   // ^ end of methods
   watch: {
     carpool: function() {
+      this.selectedCarpool = this.carpool;
       this.setStart();
     }
   }
