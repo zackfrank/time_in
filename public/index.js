@@ -462,6 +462,7 @@ var Carpool = {
           this.updateResponse = response.data;
           this.selectedCarpool = response.data;
           this.carpool = response.data;
+          location.reload();
         }.bind(this)
       );
     },

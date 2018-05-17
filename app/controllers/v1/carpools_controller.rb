@@ -12,8 +12,10 @@ class V1::CarpoolsController < ApplicationController
     # refactor by moving logic to model
     carpool = Carpool.find(params[:id])
     if params[:waypoint] && (params[:waypoint] != "")
-      unless (carpool.waypoints.include? params[:waypoint])
-        carpool.waypoints << params[:waypoint]
+      unless params[:waypoint] == carpool.start
+        unless (carpool.waypoints.include? params[:waypoint])
+          carpool.waypoints << params[:waypoint]
+        end
       end
     end
 
