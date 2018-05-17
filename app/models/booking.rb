@@ -123,7 +123,7 @@ class Booking < ApplicationRecord
     {
       id: id,
       student: student.first_name,
-      birthday: booking.student.birthday?,
+      birthday: student.birthday?,
       booked_by: booked_by,
       user_address: user.address + " " + user.zip,
       attendance_record_id: ar.id,
