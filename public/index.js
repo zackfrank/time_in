@@ -111,6 +111,19 @@ var Schedule = {
           this.postOptInMessage = "Session cancelled. Thank you!";
         }.bind(this)
       );
+    },
+    standby: function(id) {
+      var params = {
+        status: "Standby"
+      };
+      axios.patch("/v1/bookings/" + id, params).then(
+        function(response) {
+          this.response = response.data;
+          var booking = this.bookings.filter(booking => booking.id === id);
+          booking[0].status = "Standby";
+          this.postOptInMessage = "Switched to Standby. Good Luck!";
+        }.bind(this)
+      );
     }
   },
   computed: {}
@@ -757,6 +770,7 @@ var AuthPage = {
           localStorage.setItem("account_id", response.data.user.account_id);
           localStorage.setItem("id", response.data.user.id);
           localStorage.setItem("name", response.data.user.first_name);
+          localStorage.setItem("admin", response.data.admin);
           console.log(localStorage.getItem("account_id"));
           router.push("/book");
           location.reload();
@@ -807,7 +821,7 @@ var app = new Vue({
   router: router,
   data: function() {
     return {
-      admin: true,
+      admin: localStorage.getItem("admin"),
       jwt: "",
       name: localStorage.getItem("name")
     };

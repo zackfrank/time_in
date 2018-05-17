@@ -51,10 +51,10 @@
         <div class="collapse navbar-collapse" id="idanceNav">
           <i class="fa fa-times close-navbar-mobile" aria-hidden="true" data-toggle="collapse" data-target="#idanceNav"></i>
           <ul class="navbar-nav ml-auto">
-            <li><a href="/#/" class="nav-link" v-bind:class="{ active: ($route.path === '/') }">Home</a></li>
+            <li><a href="/#/" class="nav-link" v-if="!admin" v-bind:class="{ active: ($route.path === '/') }">Home</a></li>
             <li><a href="/#/profile" class="nav-link" v-bind:class="{ active: ($route.path === '/profile') }">Profile</a></li>
-            <li><a href="/#/book" class="nav-link" v-bind:class="{ active: ($route.path === '/book') }">Book</a></li>
-            <li><a href="/#/schedule" class="nav-link" v-bind:class="{ active: ($route.path === '/schedule') }">My Schedule</a></li>
+            <li><a href="/#/book" class="nav-link" v-if="!admin" v-bind:class="{ active: ($route.path === '/book') }">Book</a></li>
+            <li><a href="/#/schedule" class="nav-link" v-if="!admin" v-bind:class="{ active: ($route.path === '/schedule') }">My Schedule</a></li>
             <li><a href="/#/auth" class="nav-link" v-if="!jwt" v-bind:class="{ active: ($route.path === '/auth') }">Signup/Login</a></li>
             <li><a href="/#/admin" class="nav-link" v-bind:class="{ active: ($route.path === '/admin') }" v-if="admin">Admin</a></li>
             <li v-if="jwt">
@@ -760,11 +760,6 @@
             data-title="CreateCarpool"
             v-if="!booking.carpool">Create New Carpool
           </button>
-          <button 
-            v-if="booking.carpool"
-            class="btn btn-light btn-join" 
-            v-on:click="leaveCarpool()">Leave Your Carpool
-          </button>
           
           <!-- For Trouble-shooting: -->
           <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
@@ -775,7 +770,7 @@
             <h6 v-if="createResponse">Carpool Created!</h6>
           </div>
 
-          <div v-if="selectedCarpool">
+          <div v-if="selectedCarpool" style="margin-bottom: 25px">
             <h5 style="margin-top: 15px; margin-bottom: 20px">Carpool Details:</h5>
             <h6>Carpool Name:</h6>
             <p>{{selectedCarpool.name}}</p>
@@ -794,6 +789,12 @@
             <div id="carpool-details" style="margin-top: 10px;" v-bind:style="{color: detailsHere()}">{{details}} <span v-if="addMathnasium()">Mathnasium</span></div>
           </div>
           <!-- End of Carpool Details -->
+          
+          <button 
+            v-if="booking.carpool"
+            class="btn btn-light btn-join" 
+            v-on:click="leaveCarpool()">Leave Your Carpool
+          </button>
 
           <!-- <div v-if="">No one has created a carpool for this time yet. Feel free to create one!</div> -->
 
@@ -999,6 +1000,7 @@
                       <td>
                         {{booking.status}}
                         <a href="/#/schedule" style="color: red; font-size: 1.3em; text-decoration: none; margin-left: 8px" v-on:click="cancelSession(booking.id)" v-if="booking.status === 'Booked' || booking.status === 'Standby'">&times;</a>
+                        <button v-on:click="standby(booking.id)" style="margin-left: 8px" v-if="booking.status === 'Cancelled'">Flip to "Standby"</button>
                       </td>
                       <td>
                         <a v-bind:href=" '/#/carpool/' + booking.id " target="_blank" v-if="booking.status === 'Booked' && booking.carpool === null " class="btn btn-light btn-join" style="color: rgba(240, 63, 51, 0.8)">Join/Create Carpool</a>
@@ -1267,7 +1269,10 @@
                       </td>
                       <td>{{booking.student}}</td>
                       <td>
-                        <img src="bday.jpg" alt="" v-if="booking.birthday === ar.date" style="width: 30px">
+                        <span v-if="booking.birthday_week">
+                          <!-- <img src="bday.jpg" alt="" style="width: 30px"> -->
+                          <span style="color: #f03f33; font-weight: 900; text-shadow: 1px 1px #000;">BDAY  </span>-- {{booking.birthday}}
+                        </span>
                       </td>
                       <td>{{booking.booked_by}}</td>
                       <td>{{booking.status}}</td>

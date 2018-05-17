@@ -37,7 +37,8 @@ class AttendanceRecord < ApplicationRecord
       student_id: booking.student.id,
       student: booking.student.first_name + " " + booking.student.last_name,
       booked_by: booking.booked_by,
-      birthday: booking.student.birthday.strftime("%a, %b %e, %Y"),
+      birthday: booking.student.birthday.strftime("%b %e"),
+      birthday_week: booking.student.birthday?,
       high_school: booking.student.high_school,
       status: booking.status,
       updated_at: booking.updated_at
