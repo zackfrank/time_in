@@ -327,7 +327,11 @@
               <div class="row" v-if="tab === 'students'"> 
               
                 <div class="contact-item col-md-6" style="margin: auto; margin-bottom: 25px">
-                    <button class="btn btn-default btn-join">Add New Student</button>
+                    <button 
+                      data-toggle="modal"
+                      data-target="#addStudent"
+                      class="btn btn-default btn-join">Add New Student
+                    </button>
                 </div>
               </div>
 
@@ -363,7 +367,49 @@
                     </div>
                   </div>
                 </div>
+                
+                <div id="addStudent" class="modal fade" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog event-details" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Add New Student</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class="description">Please enter new student information:</p>
 
+                        <div class="row">
+                          <div class="col-sm-5 order-sm-2">
+                            <img class="modal-img" src="img/a-plus-outside.jpg" alt="A-Plus mascot outside">
+                          </div>
+                          <div class="col-sm-7 order-sm-1">
+
+                          <div class="form-group">
+                            <input type="text" v-model="firstName" class="col-md-7" placeholder="First Name">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" v-model="lastName" class="col-md-7" placeholder="Last Name">
+                          </div>
+                           <div class="form-group">
+                            <select name="highschool" id="highschool" v-model="highSchool">
+                              <option disabled value="">High School Program?</option>
+                              <option value="Parent">Yes</option>
+                              <option value="Grandparent">No</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <input type="tel" v-model="birthday" class="col-md-7" placeholder="YYYY-MM-DD">
+                          </div>
+                            <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="newStudent()">Create!</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
               </div>
 
               <!-- ACCOUNT PROFILE --> 
@@ -372,7 +418,11 @@
               <div class="row" v-if="tab === 'account'"> 
               
                 <div class="contact-item col-md-6" style="margin: auto; margin-bottom: 25px">
-                    <button class="btn btn-default btn-join">Add New User</button>
+                    <button 
+                      data-toggle="modal"
+                      data-target="#addUser"
+                      class="btn btn-default btn-join">Add New User
+                    </button>
                 </div>
               </div>
 
@@ -410,6 +460,65 @@
               
               </div>
 
+              <div id="addUser" class="modal fade" role="dialog" aria-hidden="true">
+                <div class="modal-dialog event-details" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add New User</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p class="description">Please enter new user information:</p>
+
+                      <div class="row">
+                        <div class="col-sm-5 order-sm-2">
+                          <img class="modal-img" src="img/a-plus-outside.jpg" alt="A-Plus mascot outside">
+                        </div>
+                        <div class="col-sm-7 order-sm-1">
+
+                        <div class="form-group">
+                          <input type="text" v-model="firstName" class="col-md-7" placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" v-model="lastName" class="col-md-7" placeholder="Last Name">
+                        </div>
+                         <div class="form-group">
+                          <select name="relationship" id="relationship" v-model="relationship">
+                            <option disabled value="">Relationship to student...</option>
+                            <option value="Parent">Parent</option>
+                            <option value="Grandparent">Grandparent</option>
+                            <option value="Babysitter">Babysitter</option>
+                            <option value="Sibling">Sibling</option>
+                            <option value="Friend">Friend</option>
+                            <option value="Aunt">Aunt</option>
+                            <option value="Uncle">Uncle</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <input type="tel" v-model="birthday" class="col-md-7" placeholder="Phone Number (xxx) xxx-xxxx">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" v-model="address" class="col-md-7" placeholder="Street Address '123 Main St'">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" v-model="zip" class="col-md-7" placeholder="Zip Code '90210'">
+                        </div>
+                        <div class="form-group">
+                          <input type="password" v-model="password" class="col-md-7" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                          <input type="password" v-model="passwordConfirmation" class="col-md-7" placeholder="Enter password again">
+                        </div>
+                          <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="newUser()">Create!</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               
             <!-- COMPLETE END OF PROFILE CONTENT -->
             </div>
@@ -630,24 +739,26 @@
         
         <!-- Select Available Carpools -->
         <div id="right-panel">
-          <h3>Carpools Available:</h3>
-          <select id="waypoints" v-model="carpool">
+          <h3 v-if="!booking.carpool">Carpools Available:</h3>
+          <select id="waypoints" v-model="carpool" v-if="!booking.carpool">
             <option v-bind:value="initialCarpool" disabled>Select a Carpool...</option>
             <option v-bind:value="carpool" v-for="carpool in carpools">Carpool Name: {{carpool.name}}</option>
           </select>
         
-          <button class="btn btn-light btn-join" v-on:click="addWaypoint()" style="margin-top: 10px">Try This Carpool</button>
+          <button class="btn btn-light btn-join" v-on:click="addWaypoint()" style="margin-top: 10px" v-if="!booking.carpool">Try This Carpool</button>
           <button 
             class="btn btn-light btn-join" 
             data-toggle="modal"
             data-target="#joinCarpool"
-            data-title="JoinCarpool">Join This Carpool
+            data-title="JoinCarpool"
+            v-if="!booking.carpool">Join This Carpool
           </button>
           <button 
             class="btn btn-light btn-join" 
             data-toggle="modal"
             data-target="#createCarpool"
-            data-title="CreateCarpool">Create New Carpool
+            data-title="CreateCarpool"
+            v-if="!booking.carpool">Create New Carpool
           </button>
           <button 
             v-if="booking.carpool"
