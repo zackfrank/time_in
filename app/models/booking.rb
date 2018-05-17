@@ -7,7 +7,7 @@ class Booking < ApplicationRecord
 
   def set_booking_status(ar_id) # For Bookings#create
     ar = AttendanceRecord.find(ar_id)
-    number_currently_attending = Booking.where(attendance_record_id: ar.id).length
+    number_currently_attending = Booking.where(attendance_record_id: ar.id, status: "Booked").length
     number_currently_attending < ar.capacity ? self.status = "Booked" : self.status = "Standby"
   end
 
