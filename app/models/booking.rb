@@ -64,13 +64,14 @@ class Booking < ApplicationRecord
     self.save
   end
 
-  def at_capacity # not being used
-    bookings = Bookings.where(attendance_record_id: ar.id)
-    bookings.length < booking.attendance_record.capacity ? true : false
+  def at_capacity
+    bookings = Booking.where(attendance_record_id: attendance_record_id)
+    bookings.length < attendance_record.capacity ? full = false : full = true
+    return full
   end
 
-  def current_attendance
-    bookings = Bookings.where(attendance_record_id: ar.id)
+  def current_attendance # not being used
+    bookings = Booking.where(attendance_record_id: ar.id)
     bookings.length
   end
 
@@ -129,6 +130,7 @@ class Booking < ApplicationRecord
       attendance_record_id: ar.id,
       date: ar.date.strftime("%a, %b %e %Y"),
       passed: passed,
+      at_capacity: at_capacity,
       time: ar.time,
       status: status,
       carpool: carpool ? {id: carpool.id, name: carpool.name} : nil
