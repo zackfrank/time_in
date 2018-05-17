@@ -240,6 +240,7 @@ var Carpool = {
       userAddress: "",
       request: "",
       details: "",
+      newStart: null,
       students: [],
       start: "Downtown Oak Park",
       updateResponse: "",
@@ -309,9 +310,11 @@ var Carpool = {
       );
     },
     spotsAvailable: function() {
-      return (
-        this.selectedCarpool.spots - this.selectedCarpool.bookings.length + 1
-      );
+      if (this.selectedCarpool) {
+        return (
+          this.selectedCarpool.spots - this.selectedCarpool.bookings.length + 1
+        );
+      }
     },
     sessionDetails: function() {
       return this.selectedCarpool.date + " at " + this.selectedCarpool.time;
@@ -380,7 +383,11 @@ var Carpool = {
     addWaypoint: function() {
       var waypoint = this.userAddress;
       var waypoints = this.carpool.waypoints;
-      waypoints.push(waypoint);
+
+      // Don't add duplicate waypoints or add start as waypoint when start is start
+      if (!waypoints.includes(waypoint) && this.carpool.start !== waypoint) {
+        waypoints.push(waypoint);
+      }
 
       var start = this.carpool.start;
 
@@ -429,6 +436,10 @@ var Carpool = {
         waypoint: this.userAddress,
         booking_id: this.$route.params.id
       };
+      if (this.newStart) {
+        params["start"] = this.newStart;
+      }
+
       console.log("params:", params);
       axios.patch("/v1/carpools/" + this.carpool.id, params).then(
         function(response) {
@@ -466,7 +477,12 @@ var Carpool = {
         }.bind(this)
       );
     },
-    changeStart: function() {}
+    setNewStart: function() {
+      this.newStart = this.userAddress;
+    },
+    keepStart: function() {
+      this.newStart = null;
+    }
   },
   // ^ end of methods
   watch: {

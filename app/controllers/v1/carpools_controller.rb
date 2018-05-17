@@ -27,6 +27,7 @@ class V1::CarpoolsController < ApplicationController
         carpool.waypoints.delete(params[:start])
       end
       carpool.start = params[:start]
+      carpool.send_text(current_user, params[:start], carpool.name)
     end
 
     carpool.save   

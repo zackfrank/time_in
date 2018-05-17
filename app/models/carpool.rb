@@ -4,6 +4,22 @@ class Carpool < ApplicationRecord
   belongs_to :user
   serialize :waypoints, Array
 
+  def send_text(user, start, name)
+    account_sid = ENV['account_sid']
+    auth_token = ENV['auth_token']
+    client = Twilio::REST::Client.new(account_sid, auth_token)
+
+    from = ENV['twilio_number'] # Your Twilio number
+    to = ENV['my_phone_number'] # Your mobile phone number
+
+    client.messages.create(
+    from: from,
+    to: to,
+    body: "#{user.first_name} #{user.last_name} has offered to drive your carpool (#{name}). New starting address is now #{start}."
+    )
+  end
+
+
   def mapped_bookings
     formatted_bookings = bookings.map {|booking| 
       {
