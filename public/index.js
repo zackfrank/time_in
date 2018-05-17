@@ -315,6 +315,13 @@ var Carpool = {
     showCarpool: function() {
       console.log(this.carpool);
     },
+    stops: function() {
+      if (this.selectedCarpool.waypoints[0]) {
+        return this.selectedCarpool.waypoints;
+      } else {
+        return "No one has joined this carpool yet.";
+      }
+    },
     detailsHere: function() {
       if (this.details === "Details here...") {
         var color = "grey";

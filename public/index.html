@@ -787,7 +787,7 @@
               <option v-bind:value="spotsAvailable()">Spots Available</option>
               <option v-bind:value="selectedCarpool.start">Carpool Start Address</option>
               <option v-bind:value="sessionDetails()">Session Details</option>
-              <option v-bind:value="selectedCarpool.waypoints">Carpool Stops</option>
+              <option v-bind:value="stops()">Carpool Stops</option>
             </select>            
             <div id="carpool-details" style="margin-top: 10px;" v-bind:style="{color: detailsHere()}">{{details}} <span v-if="addMathnasium()">Mathnasium</span></div>
           </div>
