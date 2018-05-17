@@ -277,7 +277,10 @@
                 <div class="col-md-6">
                   <div class="timetable-item">
                     <div class="timetable-item-main">
-                      <div class="timetable-item-time">Relationship to Student(s):</div>
+                      <div class="timetable-item-time">
+                        <span v-if="user.relationship !== 'Admin'">Relationship to Student(s):</span>
+                        <span v-if="user.relationship === 'Admin'">Admin Role:</span>
+                      </div>
                       <div class="timetable-item-name">{{user.relationship}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
