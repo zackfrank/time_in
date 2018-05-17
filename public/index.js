@@ -320,7 +320,9 @@ var Carpool = {
       return this.selectedCarpool.date + " at " + this.selectedCarpool.time;
     },
     addMathnasium: function() {
-      if (this.details === "Driver to" || this.details === "Driver From") {
+      if (this.details === "Driver to") {
+        return true;
+      } else if (this.details === "Driver from") {
         return true;
       }
     },
