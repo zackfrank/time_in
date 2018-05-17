@@ -239,7 +239,7 @@ var Carpool = {
       spots: 3,
       userAddress: "",
       request: "",
-      details: "",
+      details: "Details here...",
       newStart: null,
       students: [],
       start: "Downtown Oak Park",
@@ -301,6 +301,14 @@ var Carpool = {
   methods: {
     showCarpool: function() {
       console.log(this.carpool);
+    },
+    detailsHere: function() {
+      if (this.details === "Details here...") {
+        var color = "grey";
+      } else {
+        color = "black";
+      }
+      return color;
     },
     fullName: function() {
       return (
@@ -478,6 +486,17 @@ var Carpool = {
           this.spots = 3;
         }.bind(this)
       );
+    },
+    leaveCarpool: function() {
+      var params = {
+        remove: "carpool"
+      };
+      axios
+        .patch("/v1/bookings/" + this.$route.params.id, params)
+        .then(function(response) {
+          this.booking = response.data;
+          location.reload();
+        });
     },
     setNewStart: function() {
       this.newStart = this.userAddress;
@@ -761,7 +780,7 @@ var LogoutPage = {
     localStorage.removeItem("jwt");
     localStorage.removeItem("account_id");
     localStorage.removeItem("id");
-    router.push("/");
+    router.push("/auth");
     location.reload();
   }
 };

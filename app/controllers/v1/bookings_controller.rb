@@ -42,9 +42,15 @@ class V1::BookingsController < ApplicationController
 
   def update
     booking = Booking.find(params[:id])
-    booking.status_update(params[:status])
+    if params[:status]
+      booking.status_update(params[:status])
+    end
+    if params[:remove] == "carpool"
+      booking.carpool_id = nil
+      booking.save
+    end
 
-    render json: {message: "Booking successfully updated."}
+    render json: booking.as_json
   end
 
   def destroy

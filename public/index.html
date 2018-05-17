@@ -649,6 +649,11 @@
             data-target="#createCarpool"
             data-title="CreateCarpool">Create New Carpool
           </button>
+          <button 
+            v-if="booking.carpool"
+            class="btn btn-light btn-join" 
+            v-on:click="leaveCarpool()">Leave Your Carpool
+          </button>
           
           <!-- For Trouble-shooting: -->
           <!-- <button v-on:click="showCarpool()">Console.log Carpool</button> -->
@@ -660,19 +665,22 @@
           </div>
 
           <div v-if="selectedCarpool">
-            <h5 style="margin-top: 15px">Carpool Details:</h5>
+            <h5 style="margin-top: 15px; margin-bottom: 20px">Carpool Details:</h5>
+            <h6>Carpool Name:</h6>
+            <p>{{selectedCarpool.name}}</p>
+            
+
             <select name="details" id="details" v-model="details">
               <option value="" disabled>Select A Detail...</option>
-              <option v-bind:value="selectedCarpool.name">Carpool Name</option>
               <option v-bind:value="fullName()">Carpool Owner</option>
               <option v-bind:value="selectedCarpool.user.phone_number">Phone Number</option>
-              <option v-bind:value="selectedCarpool.start">Carpool Start Address</option>
-              <option v-bind:value="selectedCarpool.spots">Spots Available</option>
-              <option v-bind:value="sessionDetails()">Session Details</option>
               <option v-bind:value="selectedCarpool.request">Carpool Owner Looking For...</option>
+              <option v-bind:value="selectedCarpool.spots">Spots Available</option>
+              <option v-bind:value="selectedCarpool.start">Carpool Start Address</option>
+              <option v-bind:value="sessionDetails()">Session Details</option>
               <option v-bind:value="selectedCarpool.waypoints">Carpool Stops</option>
             </select>            
-            <div id="carpool-details" style="margin-top: 10px">{{details}} <span v-if="addMathnasium()">Mathnasium</span></div>
+            <div id="carpool-details" style="margin-top: 10px;" v-bind:style="{color: detailsHere()}">{{details}} <span v-if="addMathnasium()">Mathnasium</span></div>
           </div>
           <!-- End of Carpool Details -->
 
@@ -702,7 +710,7 @@
                         <h6>Your Address:</h6>
                         <input id="start" type="text" v-model="userAddress" class="col-md-7">
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" v-if="selectedCarpool.request !== 'Passengers' ">
                         <h6>I am offering to drive</h6>
                         <select id="drive">
                           <option disabled value="">Choose one...</option>
