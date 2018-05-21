@@ -14,11 +14,23 @@ var Profile = {
   template: "#profile",
   data: function() {
     return {
-      account: null,
+      firstName: "",
+      lastName: "",
+      email: "",
+      relationship: "",
+      phoneNumber: "",
+      address: "",
+      zip: "",
+      password: "",
+      passwordConfirmation: "",
+      highSchool: "",
+      birthday: "",
+      account: {},
       userId: localStorage.getItem("id"),
       accountId: localStorage.getItem("account_id"),
-      user: null,
-      students: null,
+      user: {},
+      students: [],
+      response: "",
       tab: "user"
     };
   },
@@ -42,6 +54,74 @@ var Profile = {
   methods: {
     setTab: function(tab) {
       this.tab = tab;
+    },
+    createUser: function() {
+      var params = {
+        account_id: this.account.id,
+        first_name: this.firstName,
+        last_name: this.lastName,
+        email: this.email,
+        relationship: this.relationship,
+        phone_number: this.phoneNumber,
+        address: this.address,
+        zip: this.zip,
+        password: this.password,
+        password_confirmation: this.passwordConfirmation
+      };
+      axios
+        .post("/v1/users", params)
+        .then(
+          function(response) {
+            this.response = response.data;
+            console.log(this.response);
+            location.reload();
+            this.tab = "account";
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            this.response = error.response.data.errors;
+            console.log(this.response);
+          }.bind(this)
+        );
+      this.firstName = "";
+      this.lastName = "";
+      this.email = "";
+      this.relationship = "";
+      this.phoneNumber = "";
+      this.address = "";
+      this.zip = "";
+      this.password = "";
+      this.passwordConfirmation = "";
+    },
+    createStudent: function() {
+      var params = {
+        account_id: this.account.id,
+        first_name: this.firstName,
+        last_name: this.lastName,
+        birthday: this.birthday,
+        high_school: this.highSchool
+      };
+      axios
+        .post("/v1/students", params)
+        .then(
+          function(response) {
+            this.response = response.data;
+            console.log(this.response);
+            location.reload();
+            this.tab = "students";
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            this.response = error.response.data.errors;
+            console.log(this.response);
+          }.bind(this)
+        );
+      this.first_name = "";
+      this.lastName = "";
+      this.birthday = "";
+      this.highSchool = "";
     }
   },
   computed: {}
@@ -782,6 +862,8 @@ var AuthPage = {
       this.relationship = "";
       this.phoneNumber = "";
       this.signupEmail = "";
+      this.address = "";
+      this.zip = "";
       this.password = "";
       this.passwordConfirmation = "";
       this.loginEmail = "";

@@ -398,14 +398,14 @@
                            <div class="form-group">
                             <select name="highschool" id="highschool" v-model="highSchool">
                               <option disabled value="">High School Program?</option>
-                              <option value="Parent">Yes</option>
-                              <option value="Grandparent">No</option>
+                              <option value="true">Yes</option>
+                              <option value="false">No</option>
                             </select>
                           </div>
                           <div class="form-group">
                             <input type="tel" v-model="birthday" class="col-md-7" placeholder="YYYY-MM-DD">
                           </div>
-                            <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="newStudent()">Create!</button>
+                            <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="createStudent()">Create!</button>
                           </div>
                         </div>
                       </div>
@@ -487,6 +487,9 @@
                         <div class="form-group">
                           <input type="text" v-model="lastName" class="col-md-7" placeholder="Last Name">
                         </div>
+                        <div class="form-group">
+                          <input type="text" v-model="email" class="col-md-7" placeholder="Email">
+                        </div>
                          <div class="form-group">
                           <select name="relationship" id="relationship" v-model="relationship">
                             <option disabled value="">Relationship to student...</option>
@@ -501,7 +504,7 @@
                           </select>
                         </div>
                         <div class="form-group">
-                          <input type="tel" v-model="birthday" class="col-md-7" placeholder="Phone Number (xxx) xxx-xxxx">
+                          <input type="tel" v-model="phoneNumber" class="col-md-7" placeholder="Phone Number (xxx) xxx-xxxx">
                         </div>
                         <div class="form-group">
                           <input type="text" v-model="address" class="col-md-7" placeholder="Street Address '123 Main St'">
@@ -515,7 +518,7 @@
                         <div class="form-group">
                           <input type="password" v-model="passwordConfirmation" class="col-md-7" placeholder="Enter password again">
                         </div>
-                          <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="newUser()">Create!</button>
+                          <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="createUser()">Create!</button>
                         </div>
                       </div>
                     </div>

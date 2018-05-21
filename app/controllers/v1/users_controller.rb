@@ -18,7 +18,7 @@ class V1::UsersController < ApplicationController
       active?: true
       )
 
-    if (account = Account.find_by(name: params[:account]))
+    if (account = Account.find(params[:account_id]))
       user.account_id = account.id
     elsif params[:account]
       account = Account.create(
