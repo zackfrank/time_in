@@ -142,6 +142,7 @@ var Booking = {
       spaceLeft: "",
       formattedDate: null,
       students: null,
+      // bookedStudents: [{ first_name: "Blank" }],
       student: { first_name: "Blank" },
       booking: {},
       errors: [],
@@ -179,6 +180,7 @@ var Booking = {
         time: this.time,
         date: this.date,
         student_id: this.student.id,
+        // students: this.bookedStudents,
         ar_id: this.ar_id
       };
       console.log(params);
@@ -507,6 +509,7 @@ var Carpool = {
           this.spots = 3;
         }.bind(this)
       );
+      location.reload();
     },
     leaveCarpool: function() {
       var params = {
@@ -686,6 +689,24 @@ var AdminPage = {
           );
         }.bind(this)
       );
+    },
+    toggleHighSchool: function(id) {
+      var params = {
+        high_school: "toggle"
+      };
+      axios.patch("/v1/students/" + id, params);
+    },
+    toggleActiveStudent: function(id) {
+      var params = {
+        active: "toggle"
+      };
+      axios.patch("/v1/students/" + id, params);
+    },
+    toggleActiveUser: function(id) {
+      var params = {
+        active: "toggle"
+      };
+      axios.patch("/v1/users/" + id, params);
     }
   },
   computed: {

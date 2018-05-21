@@ -1362,7 +1362,7 @@
                           <td>{{user.email}}</td>
                           <td>{{user.phone_number}}</td>
                           <td>
-                            <input id="user-active" type="checkbox" v-bind:checked="user.active">
+                            <input id="user-active" type="checkbox" v-bind:checked="user.active" v-on:change="toggleActiveUser(user.id)">
                           </td>
                           <td><button>Reset Password</button></td>
                         </tr>
@@ -1387,10 +1387,10 @@
                           <td>{{student.last_name}}</td>
                           <td>{{student.birthday}}</td>
                           <td>
-                            <input id="student-highschool" type="checkbox" v-bind:checked="student.high_school">
+                            <input id="student-highschool" type="checkbox" v-bind:checked="student.high_school" v-on:change="toggleHighSchool(student.id)">
                           </td>
                           <td>
-                            <input id="student-active" type="checkbox" v-bind:checked="student.active">
+                            <input id="student-active" type="checkbox" v-bind:checked="student.active" v-on:change="toggleActiveStudent(student.id)">
                           </td>
                         </tr>
                       </tbody>

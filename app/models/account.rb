@@ -10,6 +10,7 @@ class Account < ApplicationRecord
       admin: admin,
       users: users.map {|user| 
         {
+          id: user.id,
           first_name: user.first_name, 
           last_name: user.last_name, 
           email: user.email, 
@@ -20,6 +21,7 @@ class Account < ApplicationRecord
       },
       students: students.map {|student| 
         {
+          id: student.id,
           first_name: student.first_name, 
           last_name: student.last_name, 
           birthday: student.birthday, 

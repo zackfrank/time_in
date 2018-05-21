@@ -98,7 +98,7 @@ class Booking < ApplicationRecord
       client.messages.create(
       from: from,
       to: to,
-      body: "#{student} is on STANDBY for a Mathnasium session at #{time} on #{date}."
+      body: "#{student} is on STANDBY for a Mathnasium session at #{time} on #{date}. You will be alerted by text if a space opens up."
       )
     end
   end

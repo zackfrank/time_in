@@ -35,6 +35,19 @@ class V1::UsersController < ApplicationController
 
   end
 
+  def update
+    user = User.find(params[:id])
+    if params[:active]
+      user[:active?] = !user[:active?]
+    end
+
+    if user.save
+      render json: user.as_json
+    else
+      render json: {error: user.errors.full_messages}
+    end
+  end
+
   def show
     render json: current_user.as_json
   end

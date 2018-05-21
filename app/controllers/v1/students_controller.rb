@@ -32,9 +32,15 @@ class V1::StudentsController < ApplicationController
 
     student.first_name = params[:first_name] || student.first_name
     student.last_name = params[:last_name] || student.last_name
-    student.high_school = params[:high_school] || student.high_school
     student.birthday = params[:birthday] || student.birthday
-    student[:active?] = params[:active?] || student.active?
+    
+    if params[:high_school]
+      student.high_school = !student.high_school
+    end
+    
+    if params[:active]
+      student[:active?] = !student[:active?]
+    end
 
     if student.save
       render json: student.as_json
