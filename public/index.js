@@ -41,11 +41,7 @@ var Profile = {
         axios.get("v1/accounts/" + this.accountId).then(
           function(response) {
             this.account = response.data;
-            axios.get("v1/students/" + this.accountId).then(
-              function(response) {
-                this.students = response.data;
-              }.bind(this)
-            );
+            this.students = response.data.students;
           }.bind(this)
         );
       }.bind(this)
@@ -122,6 +118,30 @@ var Profile = {
       this.lastName = "";
       this.birthday = "";
       this.highSchool = "";
+    },
+    toggleActiveStudent: function(id) {
+      var params = {
+        active: "toggle"
+      };
+      axios.patch("/v1/students/" + id, params).then(
+        function(response) {
+          location.reload();
+          this.tab === "students";
+        }.bind(this)
+      );
+    },
+    toggleActiveUser: function(id) {
+      var params = {
+        active: "toggle"
+      };
+      axios.patch("/v1/users/" + id, params).then(
+        function(response) {
+          var user = this.account.users.filter(user => user.id === id);
+          user.active = response.data.active;
+          location.reload();
+          this.tab === "users";
+        }.bind(this)
+      );
     }
   },
   computed: {}

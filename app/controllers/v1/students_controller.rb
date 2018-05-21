@@ -23,7 +23,7 @@ class V1::StudentsController < ApplicationController
   end
 
   def show
-    students = Student.where(account_id: params[:id])
+    students = Student.where(account_id: params[:id]).order(:created_at) # not tested with order added
     render json: students.as_json
   end
 

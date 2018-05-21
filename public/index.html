@@ -295,13 +295,14 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- Active -->
+                
+                <!-- Address -->
                 <div class="col-md-6">
                   <div class="timetable-item">
                     <div class="timetable-item-main">
-                      <div class="timetable-item-time">Active:</div>
-                      <div class="timetable-item-name" style="text-transform: uppercase;">{{user.active}}</div>
+                      <img src="/img/map.svg" height="30%" style="position: absolute;top: 0px;right: 0px;" alt="">
+                      <div class="timetable-item-time">Address:</div>
+                      <div class="timetable-item-name">{{user.address}} {{user.zip}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
                           <a href="#"
@@ -309,10 +310,7 @@
                              data-toggle="modal"
                              data-target="#editFirstName"
                              data-title="Edit First Name"
-                            >
-                            <span v-if="user.active">Deactivate</span>
-                            <span v-if="!user.active">Activate User</span>
-                          </a>
+                            >Change</a>
                         </div>
                       </div>
                     </div>
@@ -355,13 +353,10 @@
                       </div>
                       <div class="row event-actions">
                         <div class="col-lg-6">
-                          <a href="#"
-                             class="btn btn-light"
-                             data-toggle="modal"
-                             data-target="#eventDetails"
-                             data-title="IDance Yoga Festival"
-                             data-img="img/event-2.jpg"
-                            >Deactivate</a>
+                          <button class="btn btn-light" v-on:click="toggleActiveStudent(student.id)">
+                            <span v-if="student.active">Deactivate</span>
+                            <span v-if="!student.active">Activate</span>
+                          </button>
                         </div>
                         <div class="col-lg-6">
                           <a href="#" class="btn btn-default">Edit Details</a>
@@ -445,13 +440,10 @@
                       </div>
                       <div class="row event-actions">
                         <div class="col-lg-6">
-                          <a href="#"
-                             class="btn btn-light"
-                             data-toggle="modal"
-                             data-target="#eventDetails"
-                             data-title="IDance Yoga Festival"
-                             data-img="img/event-2.jpg"
-                            >Deactivate</a>
+                          <button class="btn btn-light" v-on:click="toggleActiveUser(person.id)">
+                            <span v-if="person.active">Deactivate</span>
+                            <span v-if="!person.active">Activate</span>
+                          </button>
                         </div>
                         <div class="col-lg-6">
                           <a href="#" class="btn btn-default">Edit Details</a>

@@ -8,7 +8,7 @@ class Account < ApplicationRecord
       id: id,
       name: name,
       admin: admin,
-      users: users.map {|user| 
+      users: users.sort_by {|user| user.created_at}.map {|user| 
         {
           id: user.id,
           first_name: user.first_name, 
@@ -19,7 +19,7 @@ class Account < ApplicationRecord
           active: user.active? 
         }
       },
-      students: students.map {|student| 
+      students: students.sort_by {|student| student.created_at}.map {|student| 
         {
           id: student.id,
           first_name: student.first_name, 

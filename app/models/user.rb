@@ -17,6 +17,8 @@ class User < ApplicationRecord
       last_name: last_name,
       email: email,
       # account: account,
+      address: address,
+      zip: zip,
       account_id: account_id,
       relationship: relationship,
       phone_number: phone_number,
