@@ -10,6 +10,21 @@ class User < ApplicationRecord
   has_many :bookings
   has_many :attendance_records, through: :bookings
 
+  def update_info(params)
+    if params[:active]
+      user[:active?] = !user[:active?]
+    end
+
+    self.first_name = params[:first_name] || self.first_name
+    self.last_name = params[:last_name] || self.last_name
+    self.email = params[:email] || self.email
+    self.relationship = params[:relationship] || self.relationship
+    self.phone_number = params[:phone_number] || self.phone_number
+    self.address = params[:address] || self.address
+    self.zip = params[:zip] || self.zip
+  end
+
+
   def as_json
     {
       id: id,

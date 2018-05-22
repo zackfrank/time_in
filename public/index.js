@@ -25,6 +25,7 @@ var Profile = {
       passwordConfirmation: "",
       highSchool: "",
       birthday: "",
+      editInfo: "",
       account: {},
       userId: localStorage.getItem("id"),
       accountId: localStorage.getItem("account_id"),
@@ -50,6 +51,39 @@ var Profile = {
   methods: {
     setTab: function(tab) {
       this.tab = tab;
+    },
+    setEditMyInfo: function(attribute) {
+      this.editInfo = attribute;
+    },
+    updateUser: function() {
+      var params = {
+        id: this.userId
+      };
+      if (this.editInfo === "firstName") {
+        params["first_name"] = this.firstName;
+      } else if (this.editInfo === "lastName") {
+        params["last_name"] = this.lastName;
+      } else if (this.editInfo === "email") {
+        params["email"] = this.email;
+      } else if (this.editInfo === "relationship") {
+        params["relationship"] = this.relationship;
+      } else if (this.editInfo === "phoneNumber") {
+        params["phone_number"] = this.phoneNumber;
+      } else if (this.editInfo === "address") {
+        (params["address"] = this.address), (params["zip"] = this.zip);
+      }
+      axios.patch("/v1/users/" + this.userId, params).then(
+        function(response) {
+          this.user = response.data;
+          this.firstName = "";
+          this.lastName = "";
+          this.email = "";
+          this.relationship = "";
+          this.phoneNumber = "";
+          this.address = "";
+          this.zip = "";
+        }.bind(this)
+      );
     },
     createUser: function() {
       var params = {

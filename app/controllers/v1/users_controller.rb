@@ -37,9 +37,7 @@ class V1::UsersController < ApplicationController
 
   def update
     user = User.find(params[:id])
-    if params[:active]
-      user[:active?] = !user[:active?]
-    end
+    user.update_info(params)
 
     if user.save
       render json: user.as_json

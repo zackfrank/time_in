@@ -199,12 +199,11 @@
                       <div class="timetable-item-name">{{user.first_name}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
-                          <a href="#"
-                             class="btn btn-light"
+                          <button class="btn btn-light"
                              data-toggle="modal"
-                             data-target="#editFirstName"
-                             data-title="Edit First Name"
-                            >Change</a>
+                             data-target="#editMyInfo"
+                             v-on:click="setEditMyInfo('firstName')"
+                            >Change</button>
                         </div>
                       </div>
                     </div>
@@ -219,12 +218,11 @@
                       <div class="timetable-item-name">{{user.last_name}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
-                          <a href="#"
-                             class="btn btn-light"
+                          <button class="btn btn-light"
                              data-toggle="modal"
-                             data-target="#editFirstName"
-                             data-title="Edit First Name"
-                            >Change</a>
+                             data-target="#editMyInfo"
+                             v-on:click="setEditMyInfo('lastName')"
+                            >Change</button>
                         </div>
                       </div>
                     </div>
@@ -240,12 +238,11 @@
                       <div class="timetable-item-name">{{user.email}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
-                          <a href="#"
-                             class="btn btn-light"
+                          <button class="btn btn-light"
                              data-toggle="modal"
-                             data-target="#editFirstName"
-                             data-title="Edit First Name"
-                            >Change</a>
+                             data-target="#editMyInfo"
+                             v-on:click="setEditMyInfo('email')"
+                            >Change</button>
                         </div>
                       </div>
                     </div>
@@ -261,12 +258,11 @@
                       <div class="timetable-item-name">{{user.phone_number}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
-                          <a href="#"
-                             class="btn btn-light"
+                          <button class="btn btn-light"
                              data-toggle="modal"
-                             data-target="#editFirstName"
-                             data-title="Edit First Name"
-                            >Change</a>
+                             data-target="#editMyInfo"
+                             v-on:click="setEditMyInfo('phoneNumber')"
+                            >Change</button>
                         </div>
                       </div>
                     </div>
@@ -284,12 +280,11 @@
                       <div class="timetable-item-name">{{user.relationship}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
-                          <a href="#"
-                             class="btn btn-light"
+                          <button class="btn btn-light"
                              data-toggle="modal"
-                             data-target="#editFirstName"
-                             data-title="Edit First Name"
-                            >Change</a>
+                             data-target="#editMyInfo"
+                             v-on:click="setEditMyInfo('relationship')"
+                            >Change</button>
                         </div>
                       </div>
                     </div>
@@ -305,12 +300,11 @@
                       <div class="timetable-item-name">{{user.address}} {{user.zip}}</div>
                       <div class="row event-actions">
                         <div class="col-md-12">
-                          <a href="#"
-                             class="btn btn-light"
+                          <button class="btn btn-light"
                              data-toggle="modal"
-                             data-target="#editFirstName"
-                             data-title="Edit First Name"
-                            >Change</a>
+                             data-target="#editMyInfo"
+                             v-on:click="setEditMyInfo('address')"
+                            >Change</button>
                         </div>
                       </div>
                     </div>
@@ -320,6 +314,61 @@
                 <!-- Password -->
                 <div class="contact-item col-md-6" style="margin: auto; margin-top: 25px">
                   <button class="btn btn-default btn-join">Change Password</button>
+                </div>
+
+                <!-- Edit My Info Modal -->
+                <div id="editMyInfo" class="modal fade" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog event-details" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Change My Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class="description">Please enter your changes below:</p>
+
+                        <div class="row">
+                          <div class="col-sm-7 order-sm-1">
+
+                          <div class="form-group" v-if="editInfo === 'firstName'">
+                            <input type="text" v-model="firstName" class="col-md-7" v-bind:placeholder="user.first_name">
+                          </div>
+                          <div class="form-group" v-if="editInfo === 'lastName'">
+                            <input type="text" v-model="lastName" class="col-md-7" v-bind:placeholder="user.last_name">
+                          </div>
+                          <div class="form-group" v-if="editInfo === 'email'">
+                            <input type="text" v-model="email" class="col-md-7" v-bind:placeholder="user.email">
+                          </div>
+                          <div class="form-group" v-if="editInfo === 'relationship'">
+                            <select name="relationship" id="relationship" v-model="relationship">
+                              <option disabled value="">Relationship to student...</option>
+                              <option value="Parent">Parent</option>
+                              <option value="Grandparent">Grandparent</option>
+                              <option value="Babysitter">Babysitter</option>
+                              <option value="Sibling">Sibling</option>
+                              <option value="Friend">Friend</option>
+                              <option value="Aunt">Aunt</option>
+                              <option value="Uncle">Uncle</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                          <div class="form-group" v-if="editInfo === 'phoneNumber'">
+                            <input type="tel" v-model="phoneNumber" class="col-md-7" v-bind:placeholder="user.phone_number">
+                          </div>
+                          <div class="form-group" v-if="editInfo === 'address'">
+                            <input type="text" v-model="address" class="col-md-7" v-bind:placeholder="user.address">
+                          </div>
+                          <div class="form-group" v-if="editInfo === 'address'">
+                            <input type="text" v-model="zip" class="col-md-7" v-bind:placeholder="user.zip">
+                          </div>
+                            <button data-dismiss="modal" class="btn btn-primary btn-join" v-on:click="updateUser()">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
               </div>
