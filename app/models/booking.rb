@@ -65,7 +65,7 @@ class Booking < ApplicationRecord
   end
 
   def at_capacity
-    bookings = Booking.where(attendance_record_id: attendance_record_id)
+    bookings = Booking.where(attendance_record_id: attendance_record_id, status: "Booked")
     bookings.length < attendance_record.capacity ? full = false : full = true
     return full
   end

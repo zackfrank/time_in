@@ -37,5 +37,6 @@ Rails.application.routes.draw do
     patch "/carpools/:id" => "carpools#update"
     get "/carpools/:id" => "carpools#show"
     delete "/carpools/:id" => "carpools#destroy" 
+
   end
 end

@@ -12,9 +12,9 @@
   <link rel="stylesheet" href="styles.min.css">
   <link rel="stylesheet" href="animations.css">
 
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-  <link rel="shortcut icon" href="img/favicon.ico">
+  <link rel="icon" sizes="32x32" href="img/favicon.png">
+  <link rel="icon" sizes="16x16" href="img/favicon.png">
+  <link rel="shortcut icon" href="img/favicon.png">
 
   <title>Math Booking</title>
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -408,13 +408,18 @@
                           </button>
                         </div>
                         <div class="col-lg-6">
-                          <a href="#" class="btn btn-default">Edit Details</a>
+                          <button 
+                            class="btn btn-default" 
+                            data-toggle="modal"
+                            data-target="#editStudentDetails">Edit Details
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
+                <!-- Add New Student Modal -->
                 <div id="addStudent" class="modal fade" role="dialog" aria-hidden="true">
                   <div class="modal-dialog event-details" role="document">
                     <div class="modal-content">
@@ -503,7 +508,8 @@
                 </div>
               
               </div>
-
+              
+              <!-- Add New User Modal -->
               <div id="addUser" class="modal fade" role="dialog" aria-hidden="true">
                 <div class="modal-dialog event-details" role="document">
                   <div class="modal-content">

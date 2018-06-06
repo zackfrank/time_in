@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   def update_info(params)
     if params[:active]
-      user[:active?] = !user[:active?]
+      self[:active?] = !self[:active?]
     end
 
     self.first_name = params[:first_name] || self.first_name
